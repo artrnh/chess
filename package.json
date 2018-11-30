@@ -8,8 +8,7 @@
     "start": "npm run build && node src/server/app.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/app.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "npm install --dev"
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "artrnh",
   "license": "ISC",
