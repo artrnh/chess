@@ -21,7 +21,11 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.svg$/,
+        use: 'svg-sprite-loader',
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf)$/,
         loader: 'url-loader?limit=100000',
       },
     ],
@@ -29,8 +33,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
+      Assets: path.resolve(__dirname, 'src/client/assets/'),
       Utils: path.resolve(__dirname, 'src/client/utils/'),
       Stores: path.resolve(__dirname, 'src/client/stores/'),
+      Models: path.resolve(__dirname, 'src/client/models/'),
       Components: path.resolve(__dirname, 'src/client/components/'),
       Pages: path.resolve(__dirname, 'src/client/components/pages/'),
       Common: path.resolve(__dirname, 'src/client/components/common/'),
