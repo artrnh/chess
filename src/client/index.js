@@ -8,6 +8,9 @@ import App from './App';
 
 import stores from 'Stores';
 
+import { createBoard } from 'Utils/board';
+console.log(createBoard());
+
 const app = (
   <Provider {...stores}>
     <App />

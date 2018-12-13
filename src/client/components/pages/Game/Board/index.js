@@ -8,25 +8,13 @@ import Cell from './Cell';
 @inject('game')
 class Board extends Component {
   render() {
-    console.log(this.props);
+    const { board } = this.props.game;
+
     return (
       <BoardContainer>
-        {this.props.game.board.map((row, y) =>
-          row.map((cell, x) => (
-            <Cell
-              key={y + x}
-              color={
-                y % 2
-                  ? x % 2
-                    ? '#F0DAB5'
-                    : '#B58763'
-                  : x % 2
-                  ? '#B58763'
-                  : '#F0DAB5'
-              }
-              figureColor={cell ? cell.color : null}
-              name={cell ? cell.name : null}
-            />
+        {board.map(row =>
+          row.map(({ x, y, color, figure }) => (
+            <Cell key={y + x} color={color} figure={figure} />
           ))
         )}
       </BoardContainer>

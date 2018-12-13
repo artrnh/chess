@@ -1,13 +1,14 @@
 import React from 'react';
 
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Icon from 'Common/Icon';
 
-const Cell = ({ color, figureColor, name }) => (
+const Cell = ({ color, figure }) => (
   <Square color={color}>
-    <Icon name={name} color={figureColor} />
+    {_.isEmpty(figure) ? null : <Icon name={figure.name} color={figure.color} />}
   </Square>
 );
 
