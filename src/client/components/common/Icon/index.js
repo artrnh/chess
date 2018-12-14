@@ -17,7 +17,7 @@ import 'Assets/icons/queen-white.svg';
 import 'Assets/icons/rook-white.svg';
 
 const Icon = ({ name, color }) => (
-  <svg width="55" height="55">
+  <svg width="64" height="64">
     <use xlinkHref={`#${name}-${color}`} />
   </svg>
 );

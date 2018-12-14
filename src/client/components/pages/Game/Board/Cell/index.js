@@ -1,28 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { DropTarget } from 'react-dnd';
 
-import Icon from 'Common/Icon';
+import { FigureTypes } from 'Models/Figure';
+import Figure from './Figure';
 
-const Cell = ({ color, figure }) => (
-  <Square color={color}>
-    {_.isEmpty(figure) ? null : <Icon name={figure.name} color={figure.color} />}
-  </Square>
-);
-
-Cell.propTypes = {
-  color: PropTypes.string.isRequired,
+const cellTarget = {
+  drop(props, monitor) {
+    props.moveFigure(monitor.getItem().figure, props.x, props.y);
+  },
 };
 
-const Square = styled.div`
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${props => props.color};
-`;
+const collect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
+});
 
-export default Cell;
+const Cell = ({ color, figure, connectDropTarget, isOver, canDrop }) =>
+  connectDropTarget(
+    <div
+      style={{
+        width: 64,
+        height: 64,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: color,
+      }}
+      color={color}
+    >
+      {!_.isEmpty(figure) ? <Figure {...figure} /> : null}
+    </div>
+  );
+
+Cell.propTypes = {
+  color: PropTypes.string,
+  moveFigure: PropTypes.func.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  figure: PropTypes.shape({
+    name: PropTypes.string,
+    color: PropTypes.string,
+    position: PropTypes.arrayOf(PropTypes.number),
+  }),
+};
+
+export default DropTarget(FigureTypes, cellTarget, collect)(Cell);

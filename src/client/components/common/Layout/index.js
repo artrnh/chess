@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import media from 'Utils/media';
 
-const Layout = props => <Container>{props.children}</Container>;
+const Layout = ({ children }) => <Container>{children}</Container>;
 
 const Container = styled.div`
   display: flex;

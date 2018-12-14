@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 
 import Cell from './Cell';
 
 @inject('game')
+@observer
 class Board extends Component {
   render() {
-    const { board } = this.props.game;
+    const { board, moveFigure } = this.props.game;
 
     return (
       <BoardContainer>
         {board.map(row =>
           row.map(({ x, y, color, figure }) => (
-            <Cell key={y + x} color={color} figure={figure} />
+            <Cell
+              key={y + x}
+              x={x}
+              y={y}
+              color={color}
+              figure={figure}
+              moveFigure={moveFigure}
+            />
           ))
         )}
       </BoardContainer>
