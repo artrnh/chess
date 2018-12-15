@@ -15,9 +15,7 @@ const cellTarget = {
 
   drop(props, monitor) {
     const figure = monitor.getItem().figure;
-    if (props.canMove(figure, props.x, props.y)) {
-      props.moveFigure(figure, props.x, props.y);
-    }
+    props.moveFigure(figure, props.x, props.y);
   },
 };
 

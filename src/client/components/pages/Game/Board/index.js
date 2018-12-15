@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { getCellColor, getCanDropColor } from 'Utils/board';
 import Cell from './Cell';
+import CustomDragLayer from './CustomDragLayer';
 
 @inject('game')
 @observer
@@ -14,6 +15,7 @@ class Board extends Component {
 
     return (
       <BoardContainer>
+        <CustomDragLayer />
         {board.map(row =>
           row.map(({ x, y, figure }) => (
             <Cell

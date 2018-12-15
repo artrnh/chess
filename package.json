@@ -22,7 +22,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dnd": "^7.0.2",
-    "react-dnd-html5-backend": "^7.0.2",
+    "react-dnd-mouse-backend": "^1.0.0-rc.1",
     "react-dom": "^16.6.3",
     "reactstrap": "^6.5.0",
     "styled-components": "^4.1.2"
