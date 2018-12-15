@@ -1,6 +1,15 @@
 import _ from 'lodash';
 import { observable } from 'mobx';
 
+export const FigureTypes = {
+  PAWN: 'pawn',
+  ROOK: 'rook',
+  KNIGHT: 'knight',
+  BISHOP: 'bishop',
+  QUEEN: 'queen',
+  KING: 'king',
+};
+
 export default class Figure {
   @observable position;
 
@@ -11,12 +20,3 @@ export default class Figure {
     this.position = position;
   }
 }
-
-export const FigureTypes = [
-  'pawn',
-  'rook',
-  'knight',
-  'bishop',
-  'queen',
-  'king',
-];

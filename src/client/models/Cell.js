@@ -5,10 +5,9 @@ export default class Cell {
   @observable y;
   @observable figure;
 
-  constructor(x, y, color, figure = {}) {
+  constructor(x, y, figure = {}) {
     this.x = x;
     this.y = y;
-    this.color = color;
     this.figure = figure;
   }
 }

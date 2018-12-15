@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -8,8 +8,16 @@ import { FigureTypes } from 'Models/Figure';
 import Figure from './Figure';
 
 const cellTarget = {
+  canDrop(props, monitor) {
+    const figure = monitor.getItem().figure;
+    return props.canMove(figure, props.x, props.y);
+  },
+
   drop(props, monitor) {
-    props.moveFigure(monitor.getItem().figure, props.x, props.y);
+    const figure = monitor.getItem().figure;
+    if (props.canMove(figure, props.x, props.y)) {
+      props.moveFigure(figure, props.x, props.y);
+    }
   },
 };
 
@@ -19,7 +27,14 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-const Cell = ({ color, figure, connectDropTarget, isOver, canDrop }) =>
+const Cell = ({
+  color,
+  canDropColor,
+  figure,
+  connectDropTarget,
+  isOver,
+  canDrop,
+}) =>
   connectDropTarget(
     <div
       style={{
@@ -28,7 +43,7 @@ const Cell = ({ color, figure, connectDropTarget, isOver, canDrop }) =>
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color,
+        backgroundColor: canDrop ? canDropColor : color,
       }}
       color={color}
     >
@@ -48,4 +63,6 @@ Cell.propTypes = {
   }),
 };
 
-export default DropTarget(FigureTypes, cellTarget, collect)(Cell);
+export default DropTarget(Object.values(FigureTypes), cellTarget, collect)(
+  Cell
+);
