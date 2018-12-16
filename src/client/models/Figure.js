@@ -18,5 +18,6 @@ export default class Figure {
     this.name = name;
     this.color = color;
     this.position = position;
+    this.moved = false;
   }
 }

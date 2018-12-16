@@ -15,6 +15,7 @@ class GameStore {
     this.board[y][x].figure = {
       ...figure,
       position: [x, y],
+      moved: true,
     };
   }
 
@@ -36,9 +37,13 @@ class GameStore {
       case FigureTypes.PAWN:
         const moveCheck =
           figure.color === 'white'
-            ? (toX === x && dy === -1 && enemyFigure.color !== 'black') ||
+            ? (toX === x &&
+                (dy === -1 || (!figure.moved && dy === -2)) &&
+                enemyFigure.color !== 'black') ||
               (Math.abs(dx) === 1 && dy === -1 && enemyFigure.color === 'black')
-            : (toX === x && dy === 1 && enemyFigure.color !== 'white') ||
+            : (toX === x &&
+                (dy === 1 || (!figure.moved && dy === 2)) &&
+                enemyFigure.color !== 'white') ||
               (Math.abs(dx) === 1 && dy === 1 && enemyFigure.color === 'white');
 
         return canAttack && moveCheck;
