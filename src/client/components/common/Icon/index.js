@@ -2,7 +2,6 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-// TODO: сделать спрайт
 import 'Assets/icons/bishop-black.svg';
 import 'Assets/icons/king-black.svg';
 import 'Assets/icons/knight-black.svg';

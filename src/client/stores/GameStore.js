@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 
 import { FigureTypes } from 'Models/Figure';
 import { createBoard } from 'Utils/board';
+import { checkXYCollisions, checkDiagonalCollisions } from 'Utils/collisions';
 
 class GameStore {
   @observable board = createBoard();
@@ -43,15 +44,22 @@ class GameStore {
         return canAttack && moveCheck;
 
       case FigureTypes.ROOK:
-        return canAttack && (dy === 0 || dx === 0);
+        return (
+          canAttack &&
+          checkXYCollisions(this.board, figure, this.board[toY][toX])
+        );
 
       case FigureTypes.BISHOP:
-        return canAttack && Math.abs(dx) === Math.abs(dy);
+        return (
+          canAttack &&
+          checkDiagonalCollisions(this.board, figure, this.board[toY][toX])
+        );
 
       case FigureTypes.QUEEN:
         return (
-          (canAttack && (dy === 0 || dx === 0)) ||
-          (canAttack && Math.abs(dx) === Math.abs(dy))
+          canAttack &&
+          (checkXYCollisions(this.board, figure, this.board[toY][toX]) ||
+            checkDiagonalCollisions(this.board, figure, this.board[toY][toX]))
         );
 
       case FigureTypes.KING:
