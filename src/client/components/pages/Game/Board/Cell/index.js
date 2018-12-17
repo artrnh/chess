@@ -9,12 +9,12 @@ import Figure from './Figure';
 
 const cellTarget = {
   canDrop(props, monitor) {
-    const figure = monitor.getItem().figure;
+    const { figure } = monitor.getItem();
     return props.canMove(figure, props.x, props.y);
   },
 
   drop(props, monitor) {
-    const figure = monitor.getItem().figure;
+    const { figure } = monitor.getItem();
     props.moveFigure(figure, props.x, props.y);
   },
 };
@@ -25,14 +25,7 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-const Cell = ({
-  color,
-  canDropColor,
-  figure,
-  connectDropTarget,
-  isOver,
-  canDrop,
-}) =>
+const Cell = ({ color, canDropColor, figure, connectDropTarget, canDrop }) =>
   connectDropTarget(
     <div
       style={{

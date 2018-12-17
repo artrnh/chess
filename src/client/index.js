@@ -7,9 +7,8 @@ import { DragDropContextProvider } from 'react-dnd';
 import MouseBackEnd from 'react-dnd-mouse-backend';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import App from './App';
-
 import stores from 'Stores';
+import App from './App';
 
 enableLogging();
 

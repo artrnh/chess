@@ -13,14 +13,16 @@ import {
 class Navigation extends Component {
   state = { opened: false };
 
-  toggle = () => this.setState({ isOpen: !this.state.isOpen });
+  toggle = () => this.setState(({ opened }) => ({ opened: !opened }));
 
   render() {
+    const { opened } = this.state;
+
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">Chess</NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
-        <Collapse isOpen={this.state.isOpen} navbar>
+        <Collapse isOpen={opened} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink>Profile</NavLink>

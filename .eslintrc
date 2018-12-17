@@ -6,6 +6,10 @@
     "node": true
   },
   "rules": {
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "comma-dangle": ["error", "always-multiline"]
+  },
+  "settings": {
+    "import/resolver": "webpack"
   }
 }

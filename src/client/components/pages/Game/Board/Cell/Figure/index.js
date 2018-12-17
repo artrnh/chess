@@ -18,7 +18,7 @@ const collect = (connect, monitor) => ({
   isDragging: monitor.isDragging(),
 });
 
-const Figure = ({ name, color, position, connectDragSource, isDragging }) =>
+const Figure = ({ name, color, connectDragSource, isDragging }) =>
   connectDragSource(
     <div
       style={{

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
 import { DragLayer } from 'react-dnd';
 import styled from 'styled-components';
 
@@ -13,6 +14,25 @@ const CustomDragLayer = ({ item, itemType, isDragging, currentOffset }) =>
       </DraggedItem>
     </Layer>
   );
+
+CustomDragLayer.defaultProps = {
+  item: {},
+  itemType: '',
+  currentOffset: {},
+};
+
+CustomDragLayer.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    color: PropTypes.string,
+    position: PropTypes.arrayOf(PropTypes.number),
+    moved: PropTypes.bool,
+  }),
+  itemType: PropTypes.string,
+  isDragging: PropTypes.bool.isRequired,
+  currentOffset: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
+};
 
 const collect = monitor => ({
   item: monitor.getItem(),

@@ -3,7 +3,7 @@ import _ from 'lodash';
 const checkCellsValidity = (cells, figure) => {
   const valid = [];
 
-  for (let i = 0; i < cells.length; i++) {
+  for (let i = 0; i < cells.length; i += 1) {
     if (!_.isEmpty(cells[i].figure)) {
       if (cells[i].figure.color !== figure.color) {
         valid.push(cells[i]);
@@ -60,4 +60,52 @@ export const checkDiagonalCollisions = (board, figure, validatingCell) => {
   ];
 
   return valid.includes(validatingCell);
+};
+
+export const checkPawnCollisions = ([toX, toY], figure, enemyFigure) => {
+  const [x, y] = figure.position;
+  const dx = toX - x;
+  const dy = toY - y;
+
+  const moveCheck = toX === x;
+  const attackCheck = Math.abs(dx) === 1;
+
+  const whiteMoveCheck =
+    moveCheck &&
+    (dy === -1 || (!figure.moved && dy === -2)) &&
+    enemyFigure.color !== 'black';
+
+  const whiteAttackCheck =
+    attackCheck && dy === -1 && enemyFigure.color === 'black';
+
+  const blackMoveCheck =
+    moveCheck &&
+    (dy === 1 || (!figure.moved && dy === 2)) &&
+    enemyFigure.color !== 'white';
+
+  const blackAttackCheck =
+    attackCheck && dy === 1 && enemyFigure.color === 'white';
+
+  return figure.color === 'white'
+    ? whiteMoveCheck || whiteAttackCheck
+    : blackMoveCheck || blackAttackCheck;
+};
+
+export const checkKnightCollisions = ([toX, toY], figure) => {
+  const [x, y] = figure.position;
+  const dx = toX - x;
+  const dy = toY - y;
+
+  return (
+    (Math.abs(dx) === 2 && Math.abs(dy) === 1) ||
+    (Math.abs(dx) === 1 && Math.abs(dy) === 2)
+  );
+};
+
+export const checkKingCollisions = ([toX, toY], figure) => {
+  const [x, y] = figure.position;
+  const dx = toX - x;
+  const dy = toY - y;
+
+  return Math.abs(dx) <= 1 && Math.abs(dy) <= 1;
 };

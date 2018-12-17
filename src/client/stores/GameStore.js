@@ -2,7 +2,13 @@ import { action, observable } from 'mobx';
 
 import { FigureTypes } from 'Models/Figure';
 import { createBoard } from 'Utils/board';
-import { checkXYCollisions, checkDiagonalCollisions } from 'Utils/collisions';
+import {
+  checkXYCollisions,
+  checkDiagonalCollisions,
+  checkPawnCollisions,
+  checkKnightCollisions,
+  checkKingCollisions,
+} from 'Utils/collisions';
 
 class GameStore {
   @observable board = createBoard();
@@ -20,33 +26,17 @@ class GameStore {
   }
 
   canMove = (figure, toX, toY) => {
-    const [x, y] = figure.position;
-    const dx = toX - x;
-    const dy = toY - y;
     const enemyFigure = this.board[toY][toX].figure;
     const canAttack = enemyFigure.color !== figure.color;
 
     switch (figure.name) {
       case FigureTypes.KNIGHT:
-        return (
-          canAttack &&
-          ((Math.abs(dx) === 2 && Math.abs(dy) === 1) ||
-            (Math.abs(dx) === 1 && Math.abs(dy) === 2))
-        );
+        return canAttack && checkKnightCollisions([toX, toY], figure);
 
       case FigureTypes.PAWN:
-        const moveCheck =
-          figure.color === 'white'
-            ? (toX === x &&
-                (dy === -1 || (!figure.moved && dy === -2)) &&
-                enemyFigure.color !== 'black') ||
-              (Math.abs(dx) === 1 && dy === -1 && enemyFigure.color === 'black')
-            : (toX === x &&
-                (dy === 1 || (!figure.moved && dy === 2)) &&
-                enemyFigure.color !== 'white') ||
-              (Math.abs(dx) === 1 && dy === 1 && enemyFigure.color === 'white');
-
-        return canAttack && moveCheck;
+        return (
+          canAttack && checkPawnCollisions([toX, toY], figure, enemyFigure)
+        );
 
       case FigureTypes.ROOK:
         return (
@@ -68,7 +58,7 @@ class GameStore {
         );
 
       case FigureTypes.KING:
-        return canAttack && Math.abs(dx) <= 1 && Math.abs(dy) <= 1;
+        return canAttack && checkKingCollisions([toX, toY], figure);
 
       default:
         return true;

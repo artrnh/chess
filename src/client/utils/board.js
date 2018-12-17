@@ -3,7 +3,7 @@ import Figure from 'Models/Figure';
 
 const nonEmptyRows = [0, 1, 6, 7];
 const blackRows = [0, 1];
-const whiteRows = [6, 7];
+// const whiteRows = [6, 7];
 const pawnRows = [1, 6];
 const figureLayout = [
   'rook',
@@ -27,11 +27,11 @@ export const createBoard = () =>
 
       if (pawnRows.includes(y))
         return new Cell(x, y, new Figure('pawn', getFigureColor(y), [x, y]));
-      else
-        return new Cell(
-          x,
-          y,
-          new Figure(figureLayout[x], getFigureColor(y), [x, y])
-        );
+
+      return new Cell(
+        x,
+        y,
+        new Figure(figureLayout[x], getFigureColor(y), [x, y])
+      );
     })
   );
