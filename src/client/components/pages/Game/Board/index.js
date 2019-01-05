@@ -30,12 +30,10 @@ class Board extends Component {
 
     getBoard();
 
-    console.log(process.env.NODE_ENV);
-
     const socket = openSocket(
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:8080/'
-        : 'https://chess.now.sh:8080/'
+        : 'http://chess.now.sh:8080/'
     );
 
     socket.on('board', board => {
