@@ -1,6 +1,5 @@
 import React from 'react';
 
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 
@@ -38,7 +37,7 @@ const Cell = ({ color, canDropColor, figure, connectDropTarget, canDrop }) =>
       }}
       color={color}
     >
-      {!_.isEmpty(figure) ? <Figure {...figure} /> : null}
+      {figure.id ? <Figure {...figure} /> : null}
     </div>
   );
 

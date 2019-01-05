@@ -1,5 +1,14 @@
-import Cell from 'Models/Cell';
-import Figure from 'Models/Figure';
+import _ from 'lodash';
+
+import Game from '../models/game';
+
+class Cell {
+  constructor(x, y, figure = {}) {
+    this.x = x;
+    this.y = y;
+    this.figure = figure;
+  }
+}
 
 const nonEmptyRows = [0, 1, 6, 7];
 const blackRows = [0, 1];
@@ -25,13 +34,21 @@ export const createBoard = () =>
     Array.from({ length: 8 }).map((cell, x) => {
       if (!nonEmptyRows.includes(y)) return new Cell(x, y);
 
-      if (pawnRows.includes(y))
-        return new Cell(x, y, new Figure('pawn', getFigureColor(y), [x, y]));
+      const name = pawnRows.includes(y) ? 'pawn' : figureLayout[x];
 
-      return new Cell(
-        x,
-        y,
-        new Figure(figureLayout[x], getFigureColor(y), [x, y])
-      );
+      const figure = {
+        id: _.uniqueId(name),
+        name,
+        color: getFigureColor(y),
+        position: [x, y],
+        moved: false,
+      };
+
+      return new Cell(x, y, figure);
     })
   );
+
+export const initBoard = callback => {
+  const game = new Game({ board: createBoard() });
+  return game.save(callback);
+};

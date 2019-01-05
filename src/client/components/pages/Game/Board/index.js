@@ -1,23 +1,41 @@
 import React, { Component } from 'react';
 
+import { observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
+import openSocket from 'socket.io-client';
 import styled from 'styled-components';
 
-import { getCellColor, getCanDropColor } from 'Utils/board';
 import Cell from './Cell';
 import CustomDragLayer from './CustomDragLayer';
 
 @inject('game')
 @observer
 class Board extends Component {
+  @observable loading = false;
+
   static propTypes = {
     game: PropTypes.shape({
       board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
       moveFigure: PropTypes.func,
       canMove: PropTypes.func,
+      initBoard: PropTypes.func,
     }).isRequired,
   };
+
+  async componentDidMount() {
+    const {
+      game: { getBoard, setBoard },
+    } = this.props;
+
+    getBoard();
+
+    const socket = openSocket('http://localhost:8080/');
+
+    socket.on('board', board => {
+      setBoard(board);
+    });
+  }
 
   render() {
     const {
@@ -33,8 +51,8 @@ class Board extends Component {
               key={y + x}
               x={x}
               y={y}
-              color={getCellColor(x, y)}
-              canDropColor={getCanDropColor(x, y)}
+              color={(x + y) % 2 ? '#B58763' : '#F0DAB5'}
+              canDropColor={(x + y) % 2 ? '#AAA33B' : '#CDD26C'}
               figure={figure}
               moveFigure={moveFigure}
               canMove={canMove}

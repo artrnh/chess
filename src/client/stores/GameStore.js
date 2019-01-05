@@ -1,7 +1,8 @@
-import { action, observable } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
+import axios from 'axios';
 
-import { FigureTypes } from 'Models/Figure';
-import { createBoard } from 'Utils/board';
+import Cell from 'Models/Cell';
+import Figure, { FigureTypes } from 'Models/Figure';
 import {
   checkXYCollisions,
   checkDiagonalCollisions,
@@ -11,18 +12,48 @@ import {
 } from 'Utils/collisions';
 
 class GameStore {
-  @observable board = createBoard();
+  @observable board = [];
+
+  @action.bound
+  async getBoard() {
+    const { data } = await axios.get('/api/game/board');
+
+    runInAction(() => {
+      this.setBoard(data.board);
+    });
+  }
+
+  @action.bound
+  async putBoard() {
+    await axios.put('/api/game/board', { board: this.board });
+  }
 
   @action.bound
   moveFigure(figure, x, y) {
     const [figureX, figureY] = figure.position;
 
-    this.board[figureY][figureX].figure = {};
+    this.board[figureY][figureX].figure = {
+      position: [],
+      moved: false,
+    };
+
     this.board[y][x].figure = {
       ...figure,
       position: [x, y],
       moved: true,
     };
+
+    this.putBoard();
+  }
+
+  @action.bound
+  setBoard(board) {
+    this.board = board.map(row =>
+      row.map(({ x, y, figure }) => {
+        const { id, name, color, position, moved } = figure;
+        return new Cell(x, y, new Figure(id, name, color, position, moved));
+      })
+    );
   }
 
   canMove = (figure, toX, toY) => {

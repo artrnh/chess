@@ -1,10 +1,8 @@
-import _ from 'lodash';
-
 const checkCellsValidity = (cells, figure) => {
   const valid = [];
 
   for (let i = 0; i < cells.length; i += 1) {
-    if (!_.isEmpty(cells[i].figure)) {
+    if (cells[i].figure.id) {
       if (cells[i].figure.color !== figure.color) {
         valid.push(cells[i]);
         break;

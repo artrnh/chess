@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { observable } from 'mobx';
 
 export const FigureTypes = {
@@ -13,11 +12,11 @@ export const FigureTypes = {
 export default class Figure {
   @observable position;
 
-  constructor(name, color, position) {
-    this.id = _.uniqueId(name);
+  constructor(id, name, color, position, moved = false) {
+    this.id = id;
     this.name = name;
     this.color = color;
     this.position = position;
-    this.moved = false;
+    this.moved = moved;
   }
 }
