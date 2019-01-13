@@ -33,7 +33,7 @@ class Board extends Component {
     const url =
       process.env.NODE_ENV === 'development'
         ? `http://localhost:8080/`
-        : `http://chess.now.sh:${process.env.PORT}/`;
+        : `http://chess.now.sh:80/`;
 
     console.log(url);
 
