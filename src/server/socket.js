@@ -2,8 +2,8 @@ import socketIO from 'socket.io';
 
 let io;
 
-export const socketInit = server => {
-  io = socketIO(server);
+export const socketInit = (server, options) => {
+  io = socketIO(server, options);
   return io;
 };
 
