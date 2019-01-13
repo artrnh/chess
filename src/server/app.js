@@ -48,7 +48,7 @@ mongoose
   )
   .then(() => {
     const server = app.listen(port);
-    const io = socketInit(server);
+    const io = socketInit(server, { secure: true });
 
     console.log(process.env.NODE_ENV, `Server started on port ${port}.`);
 

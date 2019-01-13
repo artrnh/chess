@@ -35,7 +35,7 @@ class Board extends Component {
         ? `http://localhost:8080/`
         : `http://chess.now.sh:80/`;
 
-    console.log(url);
+    console.log(`Socket.IO connected to server: ${url}`);
 
     const socket = openSocket(url);
 
