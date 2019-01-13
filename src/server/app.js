@@ -34,10 +34,10 @@ app.use('/api/game', gameRoutes);
 /* eslint-disable-next-line */
 export let currentGame;
 
-const port =
-  process.env.NODE_ENV === 'development'
-    ? process.env.DEV_PORT
-    : process.env.PORT;
+const port = process.env.PORT || 8080;
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PORT;
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -48,7 +48,7 @@ mongoose
   )
   .then(() => {
     const server = app.listen(port);
-    const io = socketInit(server, { secure: true });
+    const io = socketInit(server);
 
     console.log(process.env.NODE_ENV, `Server started on port ${port}.`);
 

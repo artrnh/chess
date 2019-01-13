@@ -33,7 +33,7 @@ class Board extends Component {
     const url =
       process.env.NODE_ENV === 'development'
         ? `http://localhost:8080/`
-        : `http://chess.now.sh:80/`;
+        : `http://chess-diploma.herokuapp.com/`;
 
     console.log(`Socket.IO connected to server: ${url}`);
 
