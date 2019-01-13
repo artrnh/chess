@@ -34,6 +34,11 @@ app.use('/api/game', gameRoutes);
 /* eslint-disable-next-line */
 export let currentGame;
 
+const port =
+  process.env.NODE_ENV === 'development'
+    ? process.env.DEV_PORT
+    : process.env.PORT;
+
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(
@@ -42,8 +47,10 @@ mongoose
     })
   )
   .then(() => {
-    const server = app.listen(process.env.PORT || 8080);
+    const server = app.listen(port);
     const io = socketInit(server);
+
+    console.log(process.env.NODE_ENV, `Server started on port ${port}.`);
 
     io.on('connection', () => console.log('Client connected!'));
   })
