@@ -6,8 +6,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
 import { socketInit } from './socket';
-import gameRoutes from './routes/game';
-import { initBoard } from './utils/board';
+import gamesRoutes from './routes/games';
 
 dotenv.config();
 
@@ -28,24 +27,12 @@ app.use(
   })
 );
 
-app.use('/api/game', gameRoutes);
-
-// TODO: как-то по-другому запоминать текущую игру
-/* eslint-disable-next-line */
-export let currentGame;
+app.use('/api/games', gamesRoutes);
 
 const port = process.env.PORT || 8080;
-//   process.env.NODE_ENV === 'development'
-//     ? process.env.DEV_PORT
-//     : process.env.PORT;
 
 mongoose
   .connect(process.env.MONGODB_URL)
-  .then(
-    initBoard((err, game) => {
-      currentGame = game._id;
-    })
-  )
   .then(() => {
     const server = app.listen(port);
     const io = socketInit(server);

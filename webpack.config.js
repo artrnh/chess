@@ -40,12 +40,14 @@ module.exports = {
       Components: path.resolve(__dirname, 'src/client/components/'),
       Pages: path.resolve(__dirname, 'src/client/components/pages/'),
       Common: path.resolve(__dirname, 'src/client/components/common/'),
+      Api: path.resolve(__dirname, 'src/client/api/'),
     },
   },
   devServer: {
+    contentBase: path.join(__dirname, 'public'),
     port: 3000,
     open: true,
-    contentBase: './public',
+    historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:8080',
     },

@@ -1,6 +1,7 @@
 import { action, observable, runInAction } from 'mobx';
 import axios from 'axios';
 
+import Api from 'Api';
 import Cell from 'Models/Cell';
 import Figure, { FigureTypes } from 'Models/Figure';
 import {
@@ -12,24 +13,35 @@ import {
 } from 'Utils/collisions';
 
 class GameStore {
+  @observable id = '';
+
+  @observable name = '';
+
   @observable board = [];
 
   @action.bound
-  async getBoard() {
-    const { data } = await axios.get('/api/game/board');
+  async initGame(id) {
+    const { data } = await Api.game.getGame(id);
 
     runInAction(() => {
+      this.id = data._id;
+      this.name = data.name;
       this.setBoard(data.board);
     });
   }
 
   @action.bound
-  async putBoard() {
-    await axios.put('/api/game/board', { board: this.board });
+  setBoard(board) {
+    this.board = board.map(row =>
+      row.map(({ x, y, figure }) => {
+        const { id, name, color, position, moved } = figure;
+        return new Cell(x, y, new Figure(id, name, color, position, moved));
+      })
+    );
   }
 
   @action.bound
-  moveFigure(figure, x, y) {
+  async moveFigure(figure, x, y) {
     const [figureX, figureY] = figure.position;
 
     this.board[figureY][figureX].figure = {
@@ -43,17 +55,7 @@ class GameStore {
       moved: true,
     };
 
-    this.putBoard();
-  }
-
-  @action.bound
-  setBoard(board) {
-    this.board = board.map(row =>
-      row.map(({ x, y, figure }) => {
-        const { id, name, color, position, moved } = figure;
-        return new Cell(x, y, new Figure(id, name, color, position, moved));
-      })
-    );
+    await Api.game.updateGame(this.id, { board: this.board });
   }
 
   canMove = (figure, toX, toY) => {

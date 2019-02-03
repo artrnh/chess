@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import Game from '../models/game';
-
 class Cell {
   constructor(x, y, figure = {}) {
     this.x = x;
@@ -47,8 +45,3 @@ export const createBoard = () =>
       return new Cell(x, y, figure);
     })
   );
-
-export const initBoard = callback => {
-  const game = new Game({ board: createBoard() });
-  return game.save(callback);
-};

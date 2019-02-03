@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
 import styled from 'styled-components';
@@ -9,6 +10,7 @@ import styled from 'styled-components';
 import Cell from './Cell';
 import CustomDragLayer from './CustomDragLayer';
 
+@withRouter
 @inject('game')
 @observer
 class Board extends Component {
@@ -25,11 +27,13 @@ class Board extends Component {
 
   async componentDidMount() {
     const {
-      game: { getBoard, setBoard },
+      game: { initGame, setBoard },
+      match: { params },
     } = this.props;
 
-    getBoard();
+    initGame(params.id);
 
+    // TODO: Вынести всю работу с сокетами
     const url =
       process.env.NODE_ENV === 'development'
         ? `http://localhost:8080/`
