@@ -1,5 +1,4 @@
 import { action, observable, runInAction } from 'mobx';
-import axios from 'axios';
 
 import Api from 'Api';
 import Cell from 'Models/Cell';

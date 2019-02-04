@@ -58,21 +58,6 @@ class CreateModal extends React.Component {
                 value={this.name}
               />
             </FormGroup>
-            {/* <FormGroup>
-              <Label for="color">Name</Label>
-              <Input
-                type="select"
-                name="color"
-                id="color"
-                placeholder="Choose figure color..."
-                onChange={this.changeFieldValue('color')}
-                value={this.color}
-              >
-                <option value="white">White</option>
-                <option value="black">Black</option>
-                <option value="random">Random</option>
-              </Input>
-            </FormGroup> */}
           </Form>
         </ModalBody>
         <ModalFooter>

@@ -43,11 +43,11 @@ class GamesList extends React.Component {
 
     return gamesList.games.map(game => (
       <Game key={game._id}>
-        <GameTitle color="link">{game.name}</GameTitle>
+        <GameTitle>{game.name}</GameTitle>
         <ButtonGroup>
-          <Link to={`/games/${game._id}`}>
-            <Button color="link">Join</Button>
-          </Link>
+          <Button color="link">
+            <Link to={`/games/${game._id}`}>Join</Link>
+          </Button>
 
           <Button color="link" onClick={() => gamesList.deleteGame(game._id)}>
             Delete

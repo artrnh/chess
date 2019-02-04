@@ -29,7 +29,6 @@ export const getGames = (req, res) =>
 
 export const getGame = (req, res) => {
   const { id } = req.params;
-
   Game.findById(id).then(game => res.json(game));
 };
 

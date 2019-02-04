@@ -37,8 +37,8 @@ mongoose
     const server = app.listen(port);
     const io = socketInit(server);
 
-    console.log(process.env.NODE_ENV, `Server started on port ${port}.`);
+    console.log(process.env.NODE_ENV, `server started on port ${port}.`);
 
-    io.on('connection', () => console.log('Client connected!'));
+    io.on('connection', socket => console.log(socket.id));
   })
   .catch(err => console.log(err));

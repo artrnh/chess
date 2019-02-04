@@ -26,6 +26,7 @@ export const Game = styled(ListGroupItem)`
   padding-right: 0;
 `;
 
-export const GameTitle = styled(Button).attrs({ color: 'link' })`
+export const GameTitle = styled.p`
   padding: 0;
+  margin: 0;
 `;

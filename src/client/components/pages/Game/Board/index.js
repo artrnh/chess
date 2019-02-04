@@ -5,13 +5,14 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
-import styled from 'styled-components';
 
 import Cell from './Cell';
 import CustomDragLayer from './CustomDragLayer';
 
+import { BoardContainer } from './styled';
+
 @withRouter
-@inject('game')
+@inject('game', 'routing')
 @observer
 class Board extends Component {
   @observable loading = false;
@@ -74,13 +75,5 @@ class Board extends Component {
     );
   }
 }
-
-const BoardContainer = styled.div`
-  width: 512px;
-  height: 512px;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-`;
 
 export default Board;
