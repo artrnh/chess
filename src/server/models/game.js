@@ -2,6 +2,12 @@ import mongoose from 'mongoose';
 
 const gameSchema = mongoose.Schema({
   name: String,
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   board: [
     [
       {

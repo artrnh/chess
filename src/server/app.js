@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 
 import { socketInit } from './socket';
 import gamesRoutes from './routes/games';
+import userRoutes from './routes/user';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(
 );
 
 app.use('/api/games', gamesRoutes);
+app.use('/api/user', userRoutes);
 
 const port = process.env.PORT || 8080;
 
