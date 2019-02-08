@@ -1,13 +1,13 @@
-import socketIO from 'socket.io';
+import Game from './models/game';
 
-let io;
-
-export const socketInit = (server, options) => {
-  io = socketIO(server, options);
-  return io;
+const socketSetup = io => {
+  io.on('connection', socket => {
+    socket.on('moveFigure', ({ id, board }) => {
+      Game.findByIdAndUpdate(id, { board }, { new: true }).then(game => {
+        io.emit('moveFigure', game.board);
+      });
+    });
+  });
 };
 
-export const getIO = () => {
-  if (!io) throw new Error('Socket.IO is not initialized!');
-  return io;
-};
+export default socketSetup;

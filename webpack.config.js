@@ -1,7 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
+const dotenv = require('dotenv');
 
 const outputDirectory = 'public';
+
+const env = dotenv.config().parsed;
+const envKeys = Object.keys(env).reduce(
+  (acc, item) => ({
+    ...acc,
+    [`process.env.${item}`]: JSON.stringify(env[item]),
+  }),
+  {}
+);
 
 module.exports = {
   entry: ['@babel/polyfill', './src/client/index.js'],
@@ -52,5 +62,8 @@ module.exports = {
       '/api': 'http://localhost:8080',
     },
   },
-  plugins: [new webpack.NamedModulesPlugin()],
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin(envKeys),
+  ],
 };

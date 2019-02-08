@@ -36,6 +36,7 @@ class GamesList extends React.Component {
   renderGames = () => {
     const { gamesList } = this.props;
 
+    // TODO: Повесить лоадер
     if (!gamesList.games.length)
       return (
         <Alert color="primary">There are no currently active games.</Alert>

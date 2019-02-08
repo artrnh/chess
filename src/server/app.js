@@ -4,8 +4,9 @@ import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import socketIO from 'socket.io';
 
-import { socketInit } from './socket';
+import socketSetup from './socket';
 import gamesRoutes from './routes/games';
 import userRoutes from './routes/user';
 
@@ -37,10 +38,9 @@ mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
     const server = app.listen(port);
-    const io = socketInit(server);
+    const io = socketIO(server);
+    socketSetup(io);
 
     console.log(process.env.NODE_ENV, `server started on port ${port}.`);
-
-    io.on('connection', socket => console.log(socket.id));
   })
   .catch(err => console.log(err));

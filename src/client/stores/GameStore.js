@@ -40,7 +40,7 @@ class GameStore {
   }
 
   @action.bound
-  async moveFigure(figure, x, y) {
+  moveFigure = socket => async (figure, x, y) => {
     const [figureX, figureY] = figure.position;
 
     this.board[figureY][figureX].figure = {
@@ -54,8 +54,8 @@ class GameStore {
       moved: true,
     };
 
-    await Api.game.updateGame(this.id, { board: this.board });
-  }
+    socket.emit('moveFigure', { id: this.id, board: this.board });
+  };
 
   canMove = (figure, toX, toY) => {
     const enemyFigure = this.board[toY][toX].figure;

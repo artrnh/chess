@@ -1,57 +1,48 @@
 import React, { Component } from 'react';
 
-import { observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import openSocket from 'socket.io-client';
 
 import Cell from './Cell';
 import CustomDragLayer from './CustomDragLayer';
 
 import { BoardContainer } from './styled';
 
-@withRouter
-@inject('game', 'routing')
+@inject('game')
 @observer
 class Board extends Component {
-  @observable loading = false;
-
   static propTypes = {
     game: PropTypes.shape({
       board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
       moveFigure: PropTypes.func,
       canMove: PropTypes.func,
-      initBoard: PropTypes.func,
     }).isRequired,
+    socket: PropTypes.shape({
+      emit: PropTypes.func,
+      on: PropTypes.func,
+    }),
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { socket } = this.props;
+
+    if (socket) this.subscribeToSocket(socket);
+  }
+
+  subscribeToSocket = socket => {
     const {
-      game: { initGame, setBoard },
-      match: { params },
+      game: { setBoard },
     } = this.props;
 
-    initGame(params.id);
-
-    // TODO: Вынести всю работу с сокетами
-    const url =
-      process.env.NODE_ENV === 'development'
-        ? `http://localhost:8080/`
-        : `https://chess-diploma.herokuapp.com/`;
-
-    console.log(`Socket.IO connected to server: ${url}`);
-
-    const socket = openSocket(url);
-
-    socket.on('board', board => {
+    socket.on('moveFigure', board => {
       setBoard(board);
     });
-  }
+  };
 
   render() {
     const {
       game: { board, moveFigure, canMove },
+      socket,
     } = this.props;
 
     return (
@@ -66,7 +57,7 @@ class Board extends Component {
               color={(x + y) % 2 ? '#B58763' : '#F0DAB5'}
               canDropColor={(x + y) % 2 ? '#AAA33B' : '#CDD26C'}
               figure={figure}
-              moveFigure={moveFigure}
+              moveFigure={moveFigure(socket)}
               canMove={canMove}
             />
           ))

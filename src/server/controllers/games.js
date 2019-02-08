@@ -1,5 +1,4 @@
 import Game from '../models/game';
-import { getIO } from '../socket';
 import { createBoard } from '../utils/board';
 
 export const getBoard = (req, res) => {
@@ -8,12 +7,10 @@ export const getBoard = (req, res) => {
 };
 
 export const updateGame = (req, res) => {
-  const { board, ...rest } = req.body;
+  const { ...updatedData } = req.body;
   const { id } = req.params;
 
-  getIO().emit('board', board);
-
-  Game.findByIdAndUpdate(id, { board, ...rest }, { new: true }).then(game =>
+  Game.findByIdAndUpdate(id, { ...updatedData }, { new: true }).then(game =>
     res.json(game)
   );
 };
