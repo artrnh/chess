@@ -33,6 +33,11 @@ class UserStore {
 
     localStorage.setItem('user', JSON.stringify(data));
   }
+
+  @action.bound
+  joinGame(gameId = '') {
+    this.game = gameId;
+  }
 }
 
 export default UserStore;

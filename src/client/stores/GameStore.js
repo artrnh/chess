@@ -18,6 +18,10 @@ class GameStore {
 
   @observable board = [];
 
+  @observable users = [];
+
+  @observable error = null;
+
   @action.bound
   async initGame(id) {
     const { data } = await Api.game.getGame(id);
@@ -27,6 +31,22 @@ class GameStore {
       this.name = data.name;
       this.setBoard(data.board);
     });
+  }
+
+  @action.bound
+  connectUser(userId) {
+    this.users.push(userId);
+  }
+
+  @action.bound
+  disconnectUser(userId) {
+    const userIndex = this.users.findIndex(user => user === userId);
+    this.games.splice(userIndex, 1);
+  }
+
+  @action.bound
+  setError(err) {
+    this.error = err;
   }
 
   @action.bound
@@ -40,7 +60,7 @@ class GameStore {
   }
 
   @action.bound
-  moveFigure = socket => async (figure, x, y) => {
+  moveFigure = socket => (figure, x, y) => {
     const [figureX, figureY] = figure.position;
 
     this.board[figureY][figureX].figure = {
