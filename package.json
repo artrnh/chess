@@ -33,7 +33,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dnd": "^7.0.2",
-    "react-dnd-mouse-backend": "^1.0.0-rc.1",
+    "react-dnd-touch-backend": "^0.7.1",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
@@ -67,6 +67,6 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.14"
   }
 }

@@ -41,7 +41,7 @@ class GameStore {
   @action.bound
   disconnectUser(userId) {
     const userIndex = this.users.findIndex(user => user === userId);
-    this.games.splice(userIndex, 1);
+    this.users.splice(userIndex, 1);
   }
 
   @action.bound

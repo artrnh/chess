@@ -38,6 +38,8 @@ const socketSetup = io => {
         .then(user => {
           user.game = undefined;
           user.save();
+
+          io.emit('leaveGame', { userId, gameId });
         });
     });
 

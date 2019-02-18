@@ -8,7 +8,7 @@ import { Router } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import { DragDropContextProvider } from 'react-dnd';
-import MouseBackEnd from 'react-dnd-mouse-backend';
+import TouchBackend from 'react-dnd-touch-backend';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import stores from 'Stores';
@@ -25,7 +25,9 @@ enableLogging();
 const app = (
   <Provider {...stores}>
     <Router history={history}>
-      <DragDropContextProvider backend={MouseBackEnd}>
+      <DragDropContextProvider
+        backend={TouchBackend({ enableMouseEvents: true })}
+      >
         <App />
       </DragDropContextProvider>
     </Router>

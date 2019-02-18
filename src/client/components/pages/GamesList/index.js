@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import openSocket from 'socket.io-client';
+
+import { getSocketUrl } from 'Utils/url';
 
 import { ListGroup, ButtonGroup, Button, Alert } from 'reactstrap';
 import { Wrapper, CreateGameButton, Title, Game, GameTitle } from './styled';
@@ -26,6 +29,19 @@ class GamesList extends React.Component {
     const { gamesList } = this.props;
 
     gamesList.getAllGames();
+
+    const url = getSocketUrl();
+    console.log(`Socket.IO connected to server: ${url}`);
+
+    const socket = openSocket(url);
+
+    socket.on('joinGame', ({ userId, gameId }) => {
+      gamesList.joinGame(userId, gameId);
+    });
+
+    socket.on('leaveGame', ({ userId, gameId }) => {
+      gamesList.leaveGame(userId, gameId);
+    });
   }
 
   @action.bound
@@ -45,6 +61,7 @@ class GamesList extends React.Component {
     return gamesList.games.map(game => (
       <Game key={game._id}>
         <GameTitle>{game.name}</GameTitle>
+        {`${game.users.length}/2`}
         <ButtonGroup>
           <Button color="link">
             <Link to={`/games/${game._id}`}>Join</Link>

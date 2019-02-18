@@ -68,7 +68,7 @@ class Game extends Component {
     });
   }
 
-  goBack = () => {
+  leaveGame = () => {
     const {
       history,
       user,
@@ -83,7 +83,7 @@ class Game extends Component {
     // TODO: Повесить лоадер
     return this.socket ? (
       <Wrapper>
-        <LeaveButton color="danger" onClick={this.goBack}>
+        <LeaveButton color="danger" onClick={this.leaveGame}>
           Leave Game
         </LeaveButton>
         <Board socket={this.socket} />

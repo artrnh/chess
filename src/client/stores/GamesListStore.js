@@ -33,6 +33,22 @@ class GamesListStore {
       this.games.splice(gameIndex, 1);
     });
   }
+
+  @action.bound
+  joinGame(userId, gameId) {
+    const joinedGame = this.games.find(game => game._id === gameId);
+    joinedGame.users.push(userId);
+  }
+
+  @action.bound
+  leaveGame(userId, gameId) {
+    const leavedGame = this.games.find(game => game._id === gameId);
+    const disconnestedUserIndex = leavedGame.users.findIndex(
+      user => user._id === userId
+    );
+
+    leavedGame.users.splice(disconnestedUserIndex, 1);
+  }
 }
 
 export default GamesListStore;
