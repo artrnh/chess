@@ -9,7 +9,6 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 import { DragDropContextProvider } from 'react-dnd';
 import TouchBackend from 'react-dnd-touch-backend';
-import 'bootstrap/dist/css/bootstrap.css';
 
 import stores from 'Stores';
 import App from './App';

@@ -4,71 +4,86 @@ import PropTypes from 'prop-types';
 import { action, observable } from 'mobx';
 import { observer, inject } from 'mobx-react';
 
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-} from 'reactstrap';
+import { Modal, Button, Form, Input } from 'semantic-ui-react';
 
 @inject('gamesList')
 @observer
 class CreateModal extends React.Component {
   static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    toggle: PropTypes.func.isRequired,
     gamesList: PropTypes.shape({ gamesList: PropTypes.array }).isRequired,
   };
+
+  @observable opened = false;
 
   @observable name = '';
 
   @action.bound
-  changeFieldValue = field => e => {
-    this[field] = e.target.value;
+  changeFieldValue = (e, { name, value }) => {
+    this[name] = value;
   };
 
   createRoom = () => {
-    const { gamesList, toggle } = this.props;
+    const { gamesList } = this.props;
+
+    if (!this.name) return;
 
     gamesList.createGame(this.name);
-    toggle();
+    this.toggleModal();
+    this.clearValues();
   };
 
+  @action.bound
+  clearValues() {
+    this.name = '';
+  }
+
+  @action.bound
+  toggleModal() {
+    this.opened = !this.opened;
+  }
+
   render() {
-    const { isOpen, toggle } = this.props;
+    const trigger = (
+      <Button color="blue" onClick={this.toggleCreateModal}>
+        Create game
+      </Button>
+    );
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Create game</ModalHeader>
-        <ModalBody>
-          <Form>
-            <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Provide name for your game..."
-                onChange={this.changeFieldValue('name')}
-                value={this.name}
-              />
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={toggle}>
+      <Modal
+        open={this.opened}
+        onOpen={this.toggleModal}
+        onClose={this.toggleModal}
+        trigger={trigger}
+        size="tiny"
+        centered={false}
+      >
+        <Modal.Header>Create game</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <Form onSubmit={this.createRoom}>
+              <Form.Field required>
+                <label htmlFor="name">Name</label>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Provide a name for your game..."
+                  onChange={this.changeFieldValue}
+                  value={this.name}
+                />
+              </Form.Field>
+            </Form>
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="red" onClick={this.toggleModal}>
             Cancel
           </Button>
-          {' '}
-          <Button color="primary" onClick={this.createRoom}>
+          <Button color="blue" onClick={this.createRoom}>
             Create game
           </Button>
-        </ModalFooter>
+        </Modal.Actions>
       </Modal>
     );
   }

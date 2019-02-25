@@ -1,15 +1,14 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import openSocket from 'socket.io-client';
 
 import { getSocketUrl } from 'Utils/url';
 
-import { ListGroup, ButtonGroup, Button, Alert } from 'reactstrap';
-import { Wrapper, CreateGameButton, Title, Game, GameTitle } from './styled';
+import { Table, Button, Icon, Message } from 'semantic-ui-react';
+import { Wrapper, Header } from './styled';
 
 import CreateModal from './CreateModal';
 
@@ -22,8 +21,6 @@ class GamesList extends React.Component {
       getAllGames: PropTypes.func,
     }).isRequired,
   };
-
-  @observable createModalOpened = false;
 
   componentDidMount() {
     const { gamesList } = this.props;
@@ -44,56 +41,82 @@ class GamesList extends React.Component {
     });
   }
 
-  @action.bound
-  toggleCreateModal() {
-    this.createModalOpened = !this.createModalOpened;
-  }
-
   renderGames = () => {
     const { gamesList } = this.props;
 
     // TODO: Повесить лоадер
     if (!gamesList.games.length)
       return (
-        <Alert color="primary">There are no currently active games.</Alert>
+        <Message info>
+          <Message.Header>There are no currently active games!</Message.Header>
+          <p>Be the first one and create it by yourself.</p>
+        </Message>
       );
 
-    return gamesList.games.map(game => (
-      <Game key={game._id}>
-        <GameTitle>{game.name}</GameTitle>
-        {`${game.users.length}/2`}
-        <ButtonGroup>
-          <Button color="link">
-            <Link to={`/games/${game._id}`}>Join</Link>
-          </Button>
+    return (
+      <Table color="grey">
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Players</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {gamesList.games.map(game => (
+            <Table.Row key={game._id}>
+              <Table.Cell width={10} verticalAlign="middle">
+                {game.name}
+              </Table.Cell>
 
-          <Button color="link" onClick={() => gamesList.deleteGame(game._id)}>
-            Delete
-          </Button>
-        </ButtonGroup>
-      </Game>
-    ));
+              <Table.Cell width={3} verticalAlign="middle">
+                {`${game.users.length}/2`}
+              </Table.Cell>
+
+              <Table.Cell width={3} verticalAlign="middle">
+                <Link to={`/games/${game._id}`}>
+                  <Button positive animated>
+                    <Button.Content visible>Join</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name="arrow right" />
+                    </Button.Content>
+                  </Button>
+                </Link>
+
+                <Button
+                  negative
+                  animated
+                  onClick={() => gamesList.deleteGame(game._id)}
+                >
+                  <Button.Content visible>Delete</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name="delete" />
+                  </Button.Content>
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
   };
 
   render() {
     return (
       <Wrapper>
-        <Title>
+        <Header as="h2">
           Currently active games
           <div>
-            <Button color="warning">Refresh</Button>
-            <CreateGameButton onClick={this.toggleCreateModal}>
-              Create game
-            </CreateGameButton>
+            <Button color="yellow">
+              <Icon name="redo" />
+              Refresh
+            </Button>
+
+            <CreateModal />
           </div>
-        </Title>
+        </Header>
 
-        <ListGroup>{this.renderGames()}</ListGroup>
-
-        <CreateModal
-          isOpen={this.createModalOpened}
-          toggle={this.toggleCreateModal}
-        />
+        {this.renderGames()}
       </Wrapper>
     );
   }

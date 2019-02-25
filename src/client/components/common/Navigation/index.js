@@ -1,40 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-} from 'reactstrap';
+import { Menu, Icon } from 'semantic-ui-react';
 
-class Navigation extends Component {
-  state = { opened: false };
+const Navigation = () => (
+  <Menu stackable>
+    <Menu.Item header>
+      <Icon name="chess" size="big" />
+      Chessify
+    </Menu.Item>
 
-  toggle = () => this.setState(({ opened }) => ({ opened: !opened }));
-
-  render() {
-    const { opened } = this.state;
-
-    return (
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Chess</NavbarBrand>
-        <NavbarToggler onClick={this.toggle} />
-        <Collapse isOpen={opened} navbar>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink>Profile</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/artrnh/chess">GitHub</NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Navbar>
-    );
-  }
-}
+    <Menu.Item
+      position="right"
+      href="https://github.com/artrnh/chess"
+      target="_blank"
+    >
+      <Icon name="github" size="big" fitted />
+    </Menu.Item>
+  </Menu>
+);
 
 export default Navigation;

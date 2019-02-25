@@ -5,11 +5,13 @@ import { observer, inject } from 'mobx-react';
 import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
 
+import { Button } from 'semantic-ui-react';
+
 import { getSocketUrl } from 'Utils/url';
 
 import Board from './Board';
 
-import { Wrapper, LeaveButton } from './styled';
+import { Wrapper } from './styled';
 
 @inject('game', 'user')
 @observer
@@ -83,9 +85,9 @@ class Game extends Component {
     // TODO: Повесить лоадер
     return this.socket ? (
       <Wrapper>
-        <LeaveButton color="danger" onClick={this.leaveGame}>
+        <Button color="red" onClick={this.leaveGame}>
           Leave Game
-        </LeaveButton>
+        </Button>
         <Board socket={this.socket} />
       </Wrapper>
     ) : null;
