@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 
-import Icon from 'Common/Icon';
+import { Icon } from 'Common';
 
 const figureSource = {
   beginDrag(props) {

@@ -48,7 +48,7 @@ module.exports = {
       Stores: path.resolve(__dirname, 'src/client/stores/'),
       Models: path.resolve(__dirname, 'src/client/models/'),
       Components: path.resolve(__dirname, 'src/client/components/'),
-      Pages: path.resolve(__dirname, 'src/client/components/pages/'),
+      Screens: path.resolve(__dirname, 'src/client/components/screens/'),
       Common: path.resolve(__dirname, 'src/client/components/common/'),
       Api: path.resolve(__dirname, 'src/client/api/'),
     },

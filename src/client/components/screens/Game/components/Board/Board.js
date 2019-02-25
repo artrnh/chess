@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 
-import Cell from './Cell';
-import CustomDragLayer from './CustomDragLayer';
+import { Cell, CustomDragLayer } from './components';
 
 import { BoardContainer } from './styled';
 

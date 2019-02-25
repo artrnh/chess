@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { inject } from 'mobx-react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Navigation from 'Common/Navigation';
-import Layout from 'Common/Layout';
-import GamesList from 'Pages/GamesList';
-import Game from 'Pages/Game';
+import { Navigation, Layout } from 'Common';
+
+import { Game, GamesList } from 'Screens';
 
 @inject('user')
 class App extends Component {

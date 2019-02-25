@@ -1,8 +1,10 @@
 import { action, observable, runInAction } from 'mobx';
 
 import Api from 'Api';
-import Cell from 'Models/Cell';
-import Figure, { FigureTypes } from 'Models/Figure';
+
+import { Cell, Figure } from 'Models';
+import { FigureTypes } from 'Models/Figure';
+
 import {
   checkXYCollisions,
   checkDiagonalCollisions,

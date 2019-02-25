@@ -10,7 +10,7 @@ import { getSocketUrl } from 'Utils/url';
 import { Table, Button, Icon, Message } from 'semantic-ui-react';
 import { Wrapper, Header } from './styled';
 
-import CreateModal from './CreateModal';
+import { CreateModal } from './components';
 
 @inject('gamesList')
 @observer

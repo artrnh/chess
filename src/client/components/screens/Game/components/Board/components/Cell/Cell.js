@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 
 import { FigureTypes } from 'Models/Figure';
-import Figure from './Figure';
+
+import { Figure } from './components';
 
 const cellTarget = {
   canDrop(props, monitor) {
