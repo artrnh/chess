@@ -37,7 +37,10 @@ class GamesListStore {
   @action.bound
   joinGame(userId, gameId) {
     const joinedGame = this.games.find(game => game._id === gameId);
-    joinedGame.users.push(userId);
+
+    if (!joinedGame.users.includes(userId)) {
+      joinedGame.users.push(userId);
+    }
   }
 
   @action.bound
