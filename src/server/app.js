@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
@@ -16,7 +17,7 @@ const MongoStore = connectMongo(session);
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use(bodyParser.json());
 
@@ -31,6 +32,10 @@ app.use(
 
 app.use('/api/games', gamesRoutes);
 app.use('/api/user', userRoutes);
+
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
 const port = process.env.PORT || 8080;
 
