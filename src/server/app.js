@@ -17,7 +17,7 @@ const MongoStore = connectMongo(session);
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 
@@ -34,7 +34,7 @@ app.use('/api/games', gamesRoutes);
 app.use('/api/user', userRoutes);
 
 app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const port = process.env.PORT || 8080;
