@@ -9,7 +9,7 @@ import { Button } from 'semantic-ui-react';
 
 import { getSocketUrl } from 'Utils/url';
 
-import {Board} from './components';
+import { Board } from './components';
 
 import { Wrapper } from './styled';
 
@@ -61,8 +61,8 @@ class Game extends Component {
     });
 
     socket.on('leaveGame', ({ userId }) => {
-      user.joinGame();
       disconnectUser(userId);
+      user.joinGame();
     });
 
     runInAction(() => {

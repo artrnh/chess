@@ -22,10 +22,10 @@ class GamesList extends React.Component {
     }).isRequired,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { gamesList } = this.props;
 
-    gamesList.getAllGames();
+    await gamesList.getAllGames();
 
     const url = getSocketUrl();
     console.log(`Socket.IO connected to server: ${url}`);
@@ -64,7 +64,7 @@ class GamesList extends React.Component {
         </Table.Header>
         <Table.Body>
           {gamesList.games.map(game => (
-            <Table.Row key={game._id}>
+            <Table.Row key={game._id} disabled={game.users.length >= 2}>
               <Table.Cell width={10} verticalAlign="middle">
                 {game.name}
               </Table.Cell>
@@ -74,19 +74,24 @@ class GamesList extends React.Component {
               </Table.Cell>
 
               <Table.Cell width={3} verticalAlign="middle">
-                <Link to={`/games/${game._id}`}>
-                  <Button positive animated>
-                    <Button.Content visible>Join</Button.Content>
-                    <Button.Content hidden>
-                      <Icon name="arrow right" />
-                    </Button.Content>
-                  </Button>
-                </Link>
+                <Button
+                  as={Link}
+                  to={`/games/${game._id}`}
+                  disabled={game.users.length >= 2}
+                  positive
+                  animated
+                >
+                  <Button.Content visible>Join</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name="arrow right" />
+                  </Button.Content>
+                </Button>
 
                 <Button
+                  disabled={game.users.length >= 2}
+                  onClick={() => gamesList.deleteGame(game._id)}
                   negative
                   animated
-                  onClick={() => gamesList.deleteGame(game._id)}
                 >
                   <Button.Content visible>Delete</Button.Content>
                   <Button.Content hidden>
