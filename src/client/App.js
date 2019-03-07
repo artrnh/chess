@@ -1,24 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import PropTypes from 'prop-types';
-import { inject } from 'mobx-react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { inject } from "mobx-react";
+import { Switch, Route, Redirect } from "react-router-dom";
 
-import { Navigation, Layout } from 'Common';
+import { Navigation, Layout } from "Common";
 
-import { Game, GamesList } from 'Screens';
+import { Game, GamesList } from "Screens";
 
-@inject('user')
+@inject("user", "routing")
 class App extends Component {
   static propTypes = {
     user: PropTypes.shape({
       initUser: PropTypes.func,
     }).isRequired,
+    routing: PropTypes.shape({
+      history: PropTypes.object,
+    }),
   };
 
   componentDidMount() {
-    const { user } = this.props;
+    const {
+      user,
+      routing,
+    } = this.props;
+
     user.initUser();
+
+    if (user.game) {
+      routing.push(`/games/${user.game}`);
+    }
   }
 
   render() {

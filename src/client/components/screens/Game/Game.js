@@ -25,6 +25,7 @@ class Game extends Component {
     }).isRequired,
     user: PropTypes.shape({
       joinGame: PropTypes.func,
+      leaveGame: PropTypes.func,
     }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.object,
@@ -62,7 +63,7 @@ class Game extends Component {
 
     socket.on('leaveGame', ({ userId }) => {
       disconnectUser(userId);
-      user.joinGame();
+      user.leaveGame();
     });
 
     runInAction(() => {
