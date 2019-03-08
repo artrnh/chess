@@ -1,78 +1,78 @@
-import { action, computed, observable, runInAction } from "mobx";
+import {action, computed, observable, runInAction} from 'mobx';
 
-import Api from "Api";
+import Api from 'Api';
 
 class UserStore {
-  @observable _id = "";
+    @observable _id = '';
 
-  @observable name = "";
+    @observable name = '';
 
-  @observable color = "";
+    @observable color = '';
 
-  @observable game = "";
+    @observable game = '';
 
-  @computed
-  get userData() {
-    return {
-      _id: this._id,
-      name: this.name,
-      color: this.color,
-      game: this.game,
-    };
-  }
-
-  get userFromLocalStorage() {
-    return JSON.parse(localStorage.getItem("user"));
-  }
-
-  @action.bound
-  async initUser() {
-    const userDatafromLS = this.userFromLocalStorage;
-
-    if (userDatafromLS) {
-      Object.entries(userDatafromLS).forEach(([key, value]) => {
-        this[key] = value;
-      });
-
-      return;
+    @computed
+    get userData() {
+        return {
+            _id: this._id,
+            name: this.name,
+            color: this.color,
+            game: this.game
+        };
     }
 
-    const { data } = await Api.user.initUser();
+    get userFromLocalStorage() {
+        return JSON.parse(localStorage.getItem('user'));
+    }
 
-    runInAction(() => {
-      Object.entries(data).forEach(([key, value]) => {
-        this[key] = value;
-      });
-    });
+    @action.bound
+    async initUser() {
+        const userDatafromLS = this.userFromLocalStorage;
 
-    localStorage.setItem("user", JSON.stringify(data));
-  }
+        if (userDatafromLS) {
+            Object.entries(userDatafromLS).forEach(([key, value]) => {
+                this[key] = value;
+            });
 
-  @action.bound
-  joinGame(gameId) {
-    this.game = gameId;
+            return;
+        }
 
-    this.updateLocalStorage();
-  }
+        const {data} = await Api.user.initUser();
 
-  @action.bound
-  leaveGame() {
-    this.game = "";
+        runInAction(() => {
+            Object.entries(data).forEach(([key, value]) => {
+                this[key] = value;
+            });
+        });
 
-    this.updateLocalStorage();
-  }
+        localStorage.setItem('user', JSON.stringify(data));
+    }
 
-  @action.bound
-  updateLocalStorage = () => {
-    const userData = {
-      _id: this._id,
-      name: this.name,
-      color: this.color,
-      game: this.game,
+    @action.bound
+    joinGame(gameId) {
+        this.game = gameId;
+
+        this.updateLocalStorage();
+    }
+
+    @action.bound
+    leaveGame() {
+        this.game = '';
+
+        this.updateLocalStorage();
+    }
+
+    @action.bound
+    updateLocalStorage = () => {
+        const userData = {
+            _id: this._id,
+            name: this.name,
+            color: this.color,
+            game: this.game
+        };
+
+        localStorage.setItem('user', JSON.stringify(userData));
     };
-
-    localStorage.setItem("user", JSON.stringify(userData));
-  };
 }
 
 export default UserStore;

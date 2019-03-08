@@ -24,30 +24,30 @@ app.use(express.static(publicPath));
 app.use(bodyParser.json());
 
 app.use(
-  session({
-    secret: process.env.SECRET_COOKIE,
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
+    session({
+        secret: process.env.SECRET_COOKIE,
+        resave: false,
+        saveUninitialized: false,
+        store: new MongoStore({mongooseConnection: mongoose.connection})
+    })
 );
 
 app.use('/api/games', gamesRoutes);
 app.use('/api/user', userRoutes);
 
 app.use('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+    res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 const port = process.env.PORT || 8080;
 
 mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => {
-    const server = app.listen(port);
-    const io = socketIO(server);
-    socketSetup(io);
+    .connect(process.env.MONGODB_URL)
+    .then(() => {
+        const server = app.listen(port);
+        const io = socketIO(server);
+        socketSetup(io);
 
-    console.log(process.env.NODE_ENV, `server started on port ${port}.`);
-  })
-  .catch(err => console.log(err));
+        console.log(process.env.NODE_ENV, `server started on port ${port}.`);
+    })
+    .catch(err => console.log(err));

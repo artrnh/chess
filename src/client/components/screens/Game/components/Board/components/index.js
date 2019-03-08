@@ -1,2 +1,2 @@
-export { default as Cell } from './Cell';
-export { default as CustomDragLayer } from './CustomDragLayer';
+export {default as Cell} from './Cell';
+export {default as CustomDragLayer} from './CustomDragLayer';

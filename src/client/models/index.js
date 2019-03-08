@@ -1,2 +1,2 @@
-export { default as Cell } from './Cell';
-export { default as Figure } from './Figure';
+export {default as Cell} from './Cell';
+export {default as Figure} from './Figure';

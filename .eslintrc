@@ -1,23 +1,25 @@
 {
-  "parser": "babel-eslint",
-  "extends": ["airbnb", "prettier"],
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "rules": {
-    "react/jsx-filename-extension": "off",
-    "comma-dangle": ["error", "always-multiline"],
-    "class-methods-use-this": "off",
-    "no-console": "off",
-    "no-underscore-dangle": "off",
-    "import/prefer-default-export": "off",
-    "react/require-default-props": "off",
-    "no-param-reassign": "off",
-    "jsx-a11y/label-has-associated-control": "off",
-    "jsx-a11y/label-has-for": "off"
-  },
-  "settings": {
-    "import/resolver": "webpack"
-  }
+    "parser": "babel-eslint",
+    "extends": ["airbnb", "prettier"],
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "rules": {
+        "react/jsx-filename-extension": "off",
+        "comma-dangle": ["error", "never"],
+        "class-methods-use-this": "off",
+        "no-console": "off",
+        "no-underscore-dangle": "off",
+        "import/prefer-default-export": "off",
+        "react/require-default-props": "off",
+        "no-param-reassign": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/label-has-for": "off",
+        "react/jsx-indent": ["enabled", 4],
+        "react/jsx-indent-props": ["enabled", 4]
+    },
+    "settings": {
+        "import/resolver": "webpack"
+    }
 }

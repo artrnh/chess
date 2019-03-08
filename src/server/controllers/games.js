@@ -1,38 +1,38 @@
 import Game from '../models/game';
-import { createBoard } from '../utils/board';
+import {createBoard} from '../utils/board';
 
 export const getBoard = (req, res) => {
-  const { id } = req.params;
-  Game.findById(id).then(game => res.json(game));
+    const {id} = req.params;
+    Game.findById(id).then(game => res.json(game));
 };
 
 export const updateGame = (req, res) => {
-  const { ...updatedData } = req.body;
-  const { id } = req.params;
+    const {...updatedData} = req.body;
+    const {id} = req.params;
 
-  Game.findByIdAndUpdate(id, { ...updatedData }, { new: true }).then(game =>
-    res.json(game)
-  );
+    Game.findByIdAndUpdate(id, {...updatedData}, {new: true}).then(game =>
+        res.json(game)
+    );
 };
 
 export const createGame = (req, res) => {
-  const { name } = req.body;
-  const game = new Game({ name, board: createBoard() });
-  return game.save().then(createdGame => res.status(201).json(createdGame));
+    const {name} = req.body;
+    const game = new Game({name, board: createBoard()});
+    return game.save().then(createdGame => res.status(201).json(createdGame));
 };
 
 export const getGames = (req, res) =>
-  Game.find().then(games => res.json(games));
+    Game.find().then(games => res.json(games));
 
 export const getGame = (req, res) => {
-  const { id } = req.params;
-  Game.findById(id).then(game => res.json(game));
+    const {id} = req.params;
+    Game.findById(id).then(game => res.json(game));
 };
 
 export const deleteGame = (req, res) => {
-  const { id } = req.params;
+    const {id} = req.params;
 
-  Game.findByIdAndDelete(id).then(() =>
-    res.json({ message: 'Successfully deleted entry.' })
-  );
+    Game.findByIdAndDelete(id).then(() =>
+        res.json({message: 'Successfully deleted entry.'})
+    );
 };

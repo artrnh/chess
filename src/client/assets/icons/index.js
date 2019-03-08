@@ -1,5 +1,5 @@
-import BlackPawn from 'Assets/icons/pawn-black.svg';
-import BlackKnight from 'Assets/icons/knight-black.svg';
+import BlackPawn from './pawn-black.svg';
+import BlackKnight from './knight-black.svg';
 import BlackBishop from './bishop-black.svg';
 import BlackKing from './king-black.svg';
 import BlackQueen from './queen-black.svg';
@@ -12,16 +12,16 @@ import WhiteQueen from './queen-white.svg';
 import WhiteRook from './rook-white.svg';
 
 export default {
-  BlackPawn,
-  BlackKnight,
-  BlackBishop,
-  BlackKing,
-  BlackQueen,
-  BlackRook,
-  WhiteBishop,
-  WhiteKing,
-  WhiteKnight,
-  WhitePawn,
-  WhiteQueen,
-  WhiteRook,
+    BlackPawn,
+    BlackKnight,
+    BlackBishop,
+    BlackKing,
+    BlackQueen,
+    BlackRook,
+    WhiteBishop,
+    WhiteKing,
+    WhiteKnight,
+    WhitePawn,
+    WhiteQueen,
+    WhiteRook
 };
