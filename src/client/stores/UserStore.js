@@ -49,14 +49,18 @@ class UserStore {
     }
 
     @action.bound
-    joinGame(gameId) {
+    joinGame(userId, gameId) {
+        if (userId !== this._id) return;
+
         this.game = gameId;
 
         this.updateLocalStorage();
     }
 
     @action.bound
-    leaveGame() {
+    leaveGame(userId) {
+        if (userId !== this._id) return;
+
         this.game = '';
 
         this.updateLocalStorage();

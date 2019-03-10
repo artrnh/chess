@@ -1,12 +1,22 @@
+import mongoose from 'mongoose';
+import _ from 'lodash';
+
 import Game from './models/game';
 import User from './models/user';
+
+const {ObjectId} = mongoose.Types;
 
 const socketSetup = io => {
     io.on('connection', socket => {
         socket.on('joinGame', ({userId, gameId}) => {
             Game.findById(gameId)
                 .then(game => {
-                    if (game.users.length < 2 && !game.users.includes(userId)) {
+                    if (
+                        game.users.length < 2 &&
+                        !game.users.find(id =>
+                            _.isEqual(ObjectId(id), ObjectId(userId))
+                        )
+                    ) {
                         game.users = [...game.users, userId];
                         game.save();
 

@@ -37,13 +37,14 @@ class GameStore {
 
     @action.bound
     connectUser(userId) {
-        this.users.push(userId);
+        if (!this.users.includes(userId)) this.users.push(userId);
     }
 
     @action.bound
     disconnectUser(userId) {
         const userIndex = this.users.findIndex(user => user === userId);
-        this.users.splice(userIndex, 1);
+
+        if (userIndex !== -1) this.users.splice(userIndex, 1);
     }
 
     @action.bound

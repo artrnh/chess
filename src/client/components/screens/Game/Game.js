@@ -54,7 +54,7 @@ class Game extends Component {
 
         socket.on('joinGame', ({userId, gameId}) => {
             connectUser(userId);
-            user.joinGame(gameId);
+            user.joinGame(userId, gameId);
         });
 
         socket.on('joinGameFailed', errorMessage => {
@@ -63,7 +63,7 @@ class Game extends Component {
 
         socket.on('leaveGame', ({userId}) => {
             disconnectUser(userId);
-            user.leaveGame();
+            user.leaveGame(userId);
         });
 
         runInAction(() => {
