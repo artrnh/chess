@@ -12,6 +12,8 @@ class GamesListStore {
         runInAction(() => {
             this.games.push(data);
         });
+
+        return data;
     }
 
     @action.bound

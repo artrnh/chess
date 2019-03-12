@@ -5,7 +5,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'Anonymous'
     },
-    color: String,
+    color: {
+        type: String,
+        default: ''
+    },
     game: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Game'

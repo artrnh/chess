@@ -30,9 +30,7 @@ class UserStore {
         const userDatafromLS = this.userFromLocalStorage;
 
         if (userDatafromLS) {
-            Object.entries(userDatafromLS).forEach(([key, value]) => {
-                this[key] = value;
-            });
+            this.updateStoreFields(userDatafromLS);
 
             return;
         }
@@ -40,9 +38,7 @@ class UserStore {
         const {data} = await Api.user.initUser();
 
         runInAction(() => {
-            Object.entries(data).forEach(([key, value]) => {
-                this[key] = value;
-            });
+            this.updateStoreFields(data);
         });
 
         localStorage.setItem('user', JSON.stringify(data));
@@ -77,6 +73,23 @@ class UserStore {
 
         localStorage.setItem('user', JSON.stringify(userData));
     };
+
+    @action.bound
+    async setColor(id, color) {
+        const {data} = await Api.user.updateUser(id, {color});
+
+        runInAction(() => {
+            this.updateStoreFields(data);
+            this.updateLocalStorage();
+        });
+    }
+
+    @action.bound
+    updateStoreFields(data) {
+        Object.entries(data).forEach(([key, value]) => {
+            this[key] = value;
+        });
+    }
 }
 
 export default UserStore;

@@ -4,37 +4,46 @@ import PropTypes from 'prop-types';
 import {action, observable} from 'mobx';
 import {observer, inject} from 'mobx-react';
 
-import {Modal, Button, Form, Input} from 'semantic-ui-react';
+import {Modal, Button, Form} from 'semantic-ui-react';
 
-@inject('gamesList')
+@inject('gamesList', 'user', 'routing')
 @observer
 class CreateModal extends React.Component {
     static propTypes = {
-        gamesList: PropTypes.shape({gamesList: PropTypes.array}).isRequired
+        gamesList: PropTypes.shape({gamesList: PropTypes.array}).isRequired,
+        user: PropTypes.shape({setColor: PropTypes.func}).isRequired,
+        routing: PropTypes.shape({history: PropTypes.object}).isRequired
     };
 
     @observable opened = false;
 
     @observable name = '';
 
+    @observable color = '';
+
     @action.bound
     changeFieldValue = (e, {name, value}) => {
         this[name] = value;
     };
 
-    createRoom = () => {
-        const {gamesList} = this.props;
+    createRoom = async () => {
+        const {gamesList, user, routing} = this.props;
 
-        if (!this.name) return;
+        if (!this.name || !this.color) return;
 
-        gamesList.createGame(this.name);
+        const {_id: gameId} = await gamesList.createGame(this.name);
+        user.setColor(user._id, this.color);
+
         this.toggleModal();
         this.clearValues();
+
+        routing.history.push(`/games/${gameId}`);
     };
 
     @action.bound
     clearValues() {
         this.name = '';
+        this.color = '';
     }
 
     @action.bound
@@ -62,17 +71,27 @@ class CreateModal extends React.Component {
                 <Modal.Content>
                     <Modal.Description>
                         <Form onSubmit={this.createRoom}>
-                            <Form.Field required>
-                                <label htmlFor="name">Name</label>
-                                <Input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    placeholder="Provide a name for your game..."
-                                    onChange={this.changeFieldValue}
-                                    value={this.name}
-                                />
-                            </Form.Field>
+                            <Form.Input
+                                name="name"
+                                label="Name"
+                                placeholder="Provide a name for your game..."
+                                onChange={this.changeFieldValue}
+                                value={this.name}
+                                required
+                            />
+
+                            <Form.Select
+                                name="color"
+                                label="Color"
+                                placeholder="Choose your color..."
+                                options={[
+                                    {text: 'White', value: 'white'},
+                                    {text: 'Black', value: 'black'}
+                                ]}
+                                onChange={this.changeFieldValue}
+                                value={this.color}
+                                required
+                            />
                         </Form>
                     </Modal.Description>
                 </Modal.Content>
