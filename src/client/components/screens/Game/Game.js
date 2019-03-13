@@ -37,33 +37,33 @@ class Game extends Component {
 
     @observable socket = null;
 
-    componentDidMount() {
+    async componentDidMount() {
         const {
             game: {initGame, connectUser, disconnectUser, setError},
             match: {params},
-            user
+            user: userStore
         } = this.props;
 
-        initGame(params.id);
+        await initGame(params.id);
 
         const url = getSocketUrl();
         console.log(`Socket.IO connected to server: ${url}`);
 
         const socket = openSocket(url);
-        socket.emit('joinGame', {userId: user._id, gameId: params.id});
+        socket.emit('joinGame', {userId: userStore._id, gameId: params.id});
 
-        socket.on('joinGame', ({userId, gameId}) => {
-            connectUser(userId);
-            user.joinGame(userId, gameId);
+        socket.on('joinGame', ({user, gameId}) => {
+            connectUser(user);
+            userStore.joinGame(user._id, gameId);
         });
 
         socket.on('joinGameFailed', errorMessage => {
             setError(errorMessage);
         });
 
-        socket.on('leaveGame', ({userId}) => {
-            disconnectUser(userId);
-            user.leaveGame(userId);
+        socket.on('leaveGame', ({user}) => {
+            disconnectUser(user);
+            userStore.leaveGame(user._id);
         });
 
         runInAction(() => {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {action, observable} from 'mobx';
 import {observer, inject} from 'mobx-react';
 
-import {Modal, Button, Form} from 'semantic-ui-react';
+import {Modal, Button, Form, Icon} from 'semantic-ui-react';
 
 @inject('gamesList', 'user', 'routing')
 @observer
@@ -54,6 +54,7 @@ class CreateModal extends React.Component {
     render() {
         const trigger = (
             <Button color="blue" onClick={this.toggleCreateModal}>
+                <Icon name="chess knight" />
                 Create game
             </Button>
         );

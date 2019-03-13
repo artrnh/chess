@@ -1,9 +1,22 @@
 import Game from '../models/game';
 import {createBoard} from '../utils/board';
 
-export const getBoard = (req, res) => {
+export const getGames = (req, res) =>
+    Game.find()
+        .populate('users')
+        .then(games => res.json(games));
+
+export const getGame = (req, res) => {
     const {id} = req.params;
+
     Game.findById(id).then(game => res.json(game));
+};
+
+export const createGame = (req, res) => {
+    const {name} = req.body;
+
+    const game = new Game({name, board: createBoard()});
+    return game.save().then(createdGame => res.status(201).json(createdGame));
 };
 
 export const updateGame = (req, res) => {
@@ -13,20 +26,6 @@ export const updateGame = (req, res) => {
     Game.findByIdAndUpdate(id, {...updatedData}, {new: true}).then(game =>
         res.json(game)
     );
-};
-
-export const createGame = (req, res) => {
-    const {name} = req.body;
-    const game = new Game({name, board: createBoard()});
-    return game.save().then(createdGame => res.status(201).json(createdGame));
-};
-
-export const getGames = (req, res) =>
-    Game.find().then(games => res.json(games));
-
-export const getGame = (req, res) => {
-    const {id} = req.params;
-    Game.findById(id).then(game => res.json(game));
 };
 
 export const deleteGame = (req, res) => {

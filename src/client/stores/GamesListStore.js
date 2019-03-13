@@ -1,4 +1,5 @@
 import {action, observable, runInAction} from 'mobx';
+import _ from 'lodash';
 
 import Api from 'Api';
 
@@ -37,19 +38,19 @@ class GamesListStore {
     }
 
     @action.bound
-    joinGame(userId, gameId) {
+    joinGame(joinedUser, gameId) {
         const joinedGame = this.games.find(game => game._id === gameId);
 
-        if (!joinedGame.users.includes(userId)) {
-            joinedGame.users.push(userId);
+        if (joinedGame.users.every(user => !_.isEqual(user, joinedUser))) {
+            joinedGame.users.push(joinedUser);
         }
     }
 
     @action.bound
-    leaveGame(userId, gameId) {
+    leaveGame(leavedUser, gameId) {
         const leavedGame = this.games.find(game => game._id === gameId);
         const disconnestedUserIndex = leavedGame.users.findIndex(
-            user => user._id === userId
+            user => user._id === leavedUser._id
         );
 
         leavedGame.users.splice(disconnestedUserIndex, 1);

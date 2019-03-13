@@ -12,13 +12,16 @@ import {Wrapper, Header} from './styled';
 
 import {CreateModal} from './components';
 
-@inject('gamesList')
+@inject('gamesList', 'user')
 @observer
 class GamesList extends React.Component {
     static propTypes = {
         gamesList: PropTypes.shape({
             games: PropTypes.array,
             getAllGames: PropTypes.func
+        }).isRequired,
+        user: PropTypes.shape({
+            setColor: PropTypes.func
         }).isRequired
     };
 
@@ -32,20 +35,101 @@ class GamesList extends React.Component {
 
         const socket = openSocket(url);
 
-        socket.on('joinGame', ({userId, gameId}) => {
-            gamesList.joinGame(userId, gameId);
+        socket.on('joinGame', ({user, gameId}) => {
+            gamesList.joinGame(user, gameId);
         });
 
-        socket.on('leaveGame', ({userId, gameId}) => {
-            gamesList.leaveGame(userId, gameId);
+        socket.on('leaveGame', ({user, gameId}) => {
+            gamesList.leaveGame(user, gameId);
         });
     }
 
-    renderGames = () => {
+    joinGame = (userId, color) => async () => {
+        const {user} = this.props;
+
+        await user.setColor(userId, color);
+    };
+
+    deleteGame = id => () => {
         const {gamesList} = this.props;
 
+        gamesList.deleteGame(id);
+    };
+
+    renderGame = game => {
+        const {user} = this.props;
+        const {_id, name, users} = game;
+
+        const whiteUser = users.find(u => u.color === 'white');
+        const blackUser = users.find(u => u.color === 'black');
+        const isFull = users.length >= 2;
+
+        return (
+            <Table.Row key={_id} disabled={isFull}>
+                <Table.Cell width={7} verticalAlign="middle">
+                    {name}
+                </Table.Cell>
+
+                <Table.Cell width={4} verticalAlign="middle">
+                    {`${users.length}/2`}
+                </Table.Cell>
+
+                <Table.Cell width={4} verticalAlign="middle">
+                    <Button
+                        as={Link}
+                        to={`/games/${_id}`}
+                        onClick={this.joinGame(user._id, 'white')}
+                        disabled={isFull || !!whiteUser}
+                        color="olive"
+                        animated
+                        compact
+                    >
+                        <Button.Content visible>Join as White</Button.Content>
+                        <Button.Content hidden>
+                            <Icon name="arrow right" />
+                        </Button.Content>
+                    </Button>
+
+                    <Button
+                        as={Link}
+                        to={`/games/${_id}`}
+                        onClick={this.joinGame(user._id, 'black')}
+                        disabled={isFull || !!blackUser}
+                        color="brown"
+                        animated
+                        compact
+                    >
+                        <Button.Content visible>Join as Black</Button.Content>
+                        <Button.Content hidden>
+                            <Icon name="arrow right" />
+                        </Button.Content>
+                    </Button>
+                </Table.Cell>
+                <Table.Cell width={1} verticalAlign="middle">
+                    <Button
+                        disabled={isFull}
+                        onClick={this.deleteGame(_id)}
+                        color="red"
+                        animated
+                        compact
+                    >
+                        <Button.Content visible>Delete</Button.Content>
+                        <Button.Content hidden>
+                            <Icon name="delete" />
+                        </Button.Content>
+                    </Button>
+                </Table.Cell>
+            </Table.Row>
+        );
+    };
+
+    renderGamesList = () => {
+        const {
+            gamesList: {games}
+        } = this.props;
+
         // TODO: Повесить лоадер
-        if (!gamesList.games.length)
+        if (!games.length)
             return (
                 <Message info>
                     <Message.Header>
@@ -62,57 +146,11 @@ class GamesList extends React.Component {
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Players</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
+                        <Table.HeaderCell />
                     </Table.Row>
                 </Table.Header>
-                <Table.Body>
-                    {gamesList.games.map(game => (
-                        <Table.Row
-                            key={game._id}
-                            disabled={game.users.length >= 2}
-                        >
-                            <Table.Cell width={10} verticalAlign="middle">
-                                {game.name}
-                            </Table.Cell>
 
-                            <Table.Cell width={3} verticalAlign="middle">
-                                {`${game.users.length}/2`}
-                            </Table.Cell>
-
-                            <Table.Cell width={3} verticalAlign="middle">
-                                <Button
-                                    as={Link}
-                                    to={`/games/${game._id}`}
-                                    disabled={game.users.length >= 2}
-                                    positive
-                                    animated
-                                >
-                                    <Button.Content visible>
-                                        Join
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name="arrow right" />
-                                    </Button.Content>
-                                </Button>
-
-                                <Button
-                                    disabled={game.users.length >= 2}
-                                    onClick={() =>
-                                        gamesList.deleteGame(game._id)
-                                    }
-                                    negative
-                                    animated
-                                >
-                                    <Button.Content visible>
-                                        Delete
-                                    </Button.Content>
-                                    <Button.Content hidden>
-                                        <Icon name="delete" />
-                                    </Button.Content>
-                                </Button>
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
+                <Table.Body>{games.map(this.renderGame)}</Table.Body>
             </Table>
         );
     };
@@ -132,7 +170,7 @@ class GamesList extends React.Component {
                     </div>
                 </Header>
 
-                {this.renderGames()}
+                {this.renderGamesList()}
             </Wrapper>
         );
     }

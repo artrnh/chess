@@ -64,14 +64,7 @@ class UserStore {
 
     @action.bound
     updateLocalStorage = () => {
-        const userData = {
-            _id: this._id,
-            name: this.name,
-            color: this.color,
-            game: this.game
-        };
-
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(this.userData));
     };
 
     @action.bound

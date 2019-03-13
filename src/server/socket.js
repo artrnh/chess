@@ -29,7 +29,7 @@ const socketSetup = io => {
                     user.game = gameId;
                     user.save();
 
-                    io.emit('joinGame', {userId, gameId});
+                    io.emit('joinGame', {user, gameId});
                 })
                 .catch(err => {
                     io.emit('joinGameFailed', {message: err.message});
@@ -51,7 +51,7 @@ const socketSetup = io => {
                     user.game = undefined;
                     user.save();
 
-                    io.emit('leaveGame', {userId, gameId});
+                    io.emit('leaveGame', {user, gameId});
                 });
         });
 
