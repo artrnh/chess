@@ -82,6 +82,17 @@ class Game extends Component {
         history.goBack();
     };
 
+    renderTurn = () => {
+        const {
+            game: {turn},
+            user
+        } = this.props;
+
+        const text = user.color === turn ? 'Your turn' : 'Waiting for opponent';
+
+        return <p>{text}</p>;
+    };
+
     render() {
         // TODO: Повесить лоадер
         return this.socket ? (
@@ -89,6 +100,9 @@ class Game extends Component {
                 <Button color="red" onClick={this.leaveGame}>
                     Leave Game
                 </Button>
+
+                {this.renderTurn()}
+
                 <Board socket={this.socket} />
             </Wrapper>
         ) : null;

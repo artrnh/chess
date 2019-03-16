@@ -7,7 +7,7 @@ import {Cell, CustomDragLayer} from './components';
 
 import {BoardContainer} from './styled';
 
-@inject('game')
+@inject('game', 'user')
 @observer
 class Board extends Component {
     static propTypes = {
@@ -15,6 +15,9 @@ class Board extends Component {
             board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
             moveFigure: PropTypes.func,
             canMove: PropTypes.func
+        }).isRequired,
+        user: PropTypes.shape({
+            color: PropTypes.string
         }).isRequired,
         socket: PropTypes.shape({
             emit: PropTypes.func,
@@ -30,17 +33,19 @@ class Board extends Component {
 
     subscribeToSocket = socket => {
         const {
-            game: {setBoard}
+            game: {setBoard, switchTurn}
         } = this.props;
 
-        socket.on('moveFigure', board => {
+        socket.on('moveFigure', ({board, turn}) => {
             setBoard(board);
+            switchTurn(turn);
         });
     };
 
     render() {
         const {
-            game: {board, moveFigure, canMove},
+            game: {board, moveFigure, canMove, turn},
+            user: {color},
             socket
         } = this.props;
 
@@ -58,6 +63,8 @@ class Board extends Component {
                             figure={figure}
                             moveFigure={moveFigure(socket)}
                             canMove={canMove}
+                            turn={turn}
+                            userColor={color}
                         />
                     ))
                 )}

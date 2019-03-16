@@ -9,8 +9,10 @@ import {Figure} from './components';
 
 const cellTarget = {
     canDrop(props, monitor) {
+        const {x, y, turn, userColor} = props;
         const {figure} = monitor.getItem();
-        return props.canMove(figure, props.x, props.y);
+
+        return props.canMove(figure, x, y, turn, userColor);
     },
 
     drop(props, monitor) {

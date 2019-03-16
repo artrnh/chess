@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const gameSchema = mongoose.Schema({
     name: String,
+    turn: {
+        type: String,
+        default: 'white'
+    },
     users: [
         {
             type: mongoose.Schema.Types.ObjectId,

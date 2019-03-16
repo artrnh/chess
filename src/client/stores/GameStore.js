@@ -23,6 +23,8 @@ class GameStore {
 
     @observable users = [];
 
+    @observable turn = '';
+
     @observable error = null;
 
     @action.bound
@@ -32,6 +34,7 @@ class GameStore {
         runInAction(() => {
             this.id = data._id;
             this.name = data.name;
+            this.turn = data.turn;
             this.setBoard(data.board);
         });
     }
@@ -73,6 +76,11 @@ class GameStore {
     }
 
     @action.bound
+    switchTurn(turn) {
+        this.turn = turn;
+    }
+
+    @action.bound
     moveFigure = socket => (figure, x, y) => {
         const [figureX, figureY] = figure.position;
 
@@ -90,7 +98,9 @@ class GameStore {
         socket.emit('moveFigure', {id: this.id, board: this.board});
     };
 
-    canMove = (figure, toX, toY) => {
+    canMove = (figure, toX, toY, turn, userColor) => {
+        if (turn !== userColor || figure.color !== userColor) return false;
+
         const enemyFigure = this.board[toY][toX].figure;
         const canAttack = enemyFigure.color !== figure.color;
 

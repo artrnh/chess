@@ -57,7 +57,10 @@ const socketSetup = io => {
 
         socket.on('moveFigure', ({id, board}) => {
             Game.findByIdAndUpdate(id, {board}, {new: true}).then(game => {
-                io.emit('moveFigure', game.board);
+                game.turn = game.turn === 'white' ? 'black' : 'white';
+                game.save();
+
+                io.emit('moveFigure', {board: game.board, turn: game.turn});
             });
         });
     });
