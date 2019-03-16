@@ -79,7 +79,7 @@ class Game extends Component {
         } = this.props;
 
         this.socket.emit('leaveGame', {userId: user._id, gameId: params.id});
-        history.goBack();
+        history.push('/games');
     };
 
     renderTurn = () => {
