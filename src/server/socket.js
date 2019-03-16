@@ -51,7 +51,8 @@ const socketSetup = io => {
                     user.game = undefined;
                     user.save();
 
-                    io.emit('leaveGame', {user, gameId});
+                    // socket.broadcast.emit('leaveGame', {user, gameId});
+                    socket.broadcast.emit('leaveGame', {user, gameId});
                 });
         });
 

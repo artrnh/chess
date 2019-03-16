@@ -13,7 +13,7 @@ import {Board} from './components';
 
 import {Wrapper} from './styled';
 
-@inject('game', 'user')
+@inject('game', 'user', 'gamesList')
 @observer
 class Game extends Component {
     static propTypes = {
@@ -25,6 +25,9 @@ class Game extends Component {
         }).isRequired,
         user: PropTypes.shape({
             joinGame: PropTypes.func,
+            leaveGame: PropTypes.func
+        }).isRequired,
+        gamesList: PropTypes.shape({
             leaveGame: PropTypes.func
         }).isRequired,
         match: PropTypes.shape({
@@ -74,9 +77,15 @@ class Game extends Component {
     leaveGame = () => {
         const {
             history,
+            game: {disconnectUser},
             user,
+            gamesList,
             match: {params}
         } = this.props;
+
+        disconnectUser(user.userData);
+        user.leaveGame(user._id);
+        gamesList.leaveGame(user._id, params.id);
 
         this.socket.emit('leaveGame', {userId: user._id, gameId: params.id});
         history.push('/games');
