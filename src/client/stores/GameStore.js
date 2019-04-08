@@ -25,6 +25,8 @@ class GameStore {
 
     @observable turn = '';
 
+    @observable loading = false;
+
     @observable error = null;
 
     @action.bound
@@ -78,6 +80,11 @@ class GameStore {
     @action.bound
     switchTurn(turn) {
         this.turn = turn;
+    }
+
+    @action.bound
+    setLoading(loading) {
+        this.loading = loading;
     }
 
     @action.bound

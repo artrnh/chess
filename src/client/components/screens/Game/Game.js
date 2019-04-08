@@ -5,6 +5,7 @@ import {observer, inject} from 'mobx-react';
 import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
 
+import {Loader} from 'Common';
 import {getSocketUrl} from 'Utils/url';
 
 import {Board, Description, Controls} from './components';
@@ -40,11 +41,13 @@ class Game extends Component {
 
     async componentDidMount() {
         const {
-            game: {initGame, connectUser, disconnectUser, setError},
+            game: {initGame, connectUser, disconnectUser, setError, setLoading},
             match: {params},
             user: userStore,
             gamesList: {getAllGames}
         } = this.props;
+
+        setLoading(true);
 
         await getAllGames();
         await initGame(params.id);
@@ -71,35 +74,47 @@ class Game extends Component {
 
         runInAction(() => {
             this.socket = socket;
+            setLoading(false);
         });
     }
 
     leaveGame = () => {
         const {
             history,
-            game: {disconnectUser},
+            game: {disconnectUser, setLoading},
             user,
             gamesList,
             match: {params}
         } = this.props;
+
+        setLoading(true);
 
         disconnectUser(user.userData);
         user.leaveGame(user._id);
         gamesList.leaveGame(user._id, params.id);
 
         this.socket.emit('leaveGame', {userId: user._id, gameId: params.id});
-        history.push('/games');
+
+        setTimeout(() => {
+            history.push('/games');
+            setLoading(false);
+        }, 300);
     };
 
     render() {
-        // TODO: Повесить лоадер
-        return this.socket ? (
+        const {
+            game: {loading}
+        } = this.props;
+
+        if (loading) return <Loader />;
+
+        return (
             <Wrapper>
                 <Description leaveGame={this.leaveGame} />
                 <Board socket={this.socket} />
                 <Controls />
             </Wrapper>
-        ) : null;
+        );
     }
 }
 
