@@ -8,6 +8,7 @@ import openSocket from 'socket.io-client';
 import {getSocketUrl} from 'Utils/url';
 
 import {Table, Button, Icon, Message} from 'semantic-ui-react';
+import {Loader} from 'Common';
 import {Wrapper, Header} from './styled';
 
 import {CreateModal} from './components';
@@ -18,7 +19,8 @@ class GamesList extends React.Component {
     static propTypes = {
         gamesList: PropTypes.shape({
             games: PropTypes.array,
-            getAllGames: PropTypes.func
+            getAllGames: PropTypes.func,
+            loading: PropTypes.bool
         }).isRequired,
         user: PropTypes.shape({
             setColor: PropTypes.func
@@ -105,6 +107,7 @@ class GamesList extends React.Component {
                         </Button.Content>
                     </Button>
                 </Table.Cell>
+
                 <Table.Cell width={1} verticalAlign="middle">
                     <Button
                         disabled={isFull}
@@ -126,10 +129,11 @@ class GamesList extends React.Component {
 
     renderGamesList = () => {
         const {
-            gamesList: {games}
+            gamesList: {games, loading}
         } = this.props;
 
-        // TODO: Повесить лоадер
+        if (loading) return <Loader />;
+
         if (!games.length)
             return (
                 <Message info>
@@ -157,12 +161,16 @@ class GamesList extends React.Component {
     };
 
     render() {
+        const {
+            gamesList: {getAllGames}
+        } = this.props;
+
         return (
             <Wrapper>
                 <Header as="h2">
                     Currently active games
                     <div>
-                        <Button color="yellow">
+                        <Button color="yellow" onClick={getAllGames}>
                             <Icon name="redo" />
                             Refresh
                         </Button>

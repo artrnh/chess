@@ -6,6 +6,8 @@ import Api from 'Api';
 class GamesListStore {
     @observable games = [];
 
+    @observable loading = false;
+
     @action.bound
     async createGame(name) {
         const {data} = await Api.gamesList.createGame(name);
@@ -19,10 +21,13 @@ class GamesListStore {
 
     @action.bound
     async getAllGames() {
+        this.loading = true;
+
         const {data} = await Api.gamesList.getGames();
 
         runInAction(() => {
             this.games = data;
+            this.loading = false;
         });
     }
 

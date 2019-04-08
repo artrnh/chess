@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import {action, observable} from 'mobx';
+import {action, observable, runInAction} from 'mobx';
 import {observer, inject} from 'mobx-react';
 
 import {Modal, Button, Form, Icon} from 'semantic-ui-react';
@@ -21,13 +21,18 @@ class CreateModal extends React.Component {
 
     @observable color = '';
 
+    @observable loading = false;
+
     @action.bound
     changeFieldValue = (e, {name, value}) => {
         this[name] = value;
     };
 
+    @action.bound
     createRoom = async () => {
         const {gamesList, user, routing} = this.props;
+
+        this.loading = true;
 
         if (!this.name || !this.color) return;
 
@@ -36,6 +41,10 @@ class CreateModal extends React.Component {
 
         this.toggleModal();
         this.clearValues();
+
+        runInAction(() => {
+            this.loading = false;
+        });
 
         routing.history.push(`/games/${gameId}`);
     };
@@ -50,6 +59,32 @@ class CreateModal extends React.Component {
     toggleModal() {
         this.opened = !this.opened;
     }
+
+    renderForm = () => (
+        <Form onSubmit={this.createRoom}>
+            <Form.Input
+                name="name"
+                label="Name"
+                placeholder="Provide a name for your game..."
+                onChange={this.changeFieldValue}
+                value={this.name}
+                required
+            />
+
+            <Form.Select
+                name="color"
+                label="Color"
+                placeholder="Choose your color..."
+                options={[
+                    {text: 'White', value: 'white'},
+                    {text: 'Black', value: 'black'}
+                ]}
+                onChange={this.changeFieldValue}
+                value={this.color}
+                required
+            />
+        </Form>
+    );
 
     render() {
         const trigger = (
@@ -70,37 +105,18 @@ class CreateModal extends React.Component {
             >
                 <Modal.Header>Create game</Modal.Header>
                 <Modal.Content>
-                    <Modal.Description>
-                        <Form onSubmit={this.createRoom}>
-                            <Form.Input
-                                name="name"
-                                label="Name"
-                                placeholder="Provide a name for your game..."
-                                onChange={this.changeFieldValue}
-                                value={this.name}
-                                required
-                            />
-
-                            <Form.Select
-                                name="color"
-                                label="Color"
-                                placeholder="Choose your color..."
-                                options={[
-                                    {text: 'White', value: 'white'},
-                                    {text: 'Black', value: 'black'}
-                                ]}
-                                onChange={this.changeFieldValue}
-                                value={this.color}
-                                required
-                            />
-                        </Form>
-                    </Modal.Description>
+                    <Modal.Description>{this.renderForm()}</Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button color="red" onClick={this.toggleModal}>
                         Cancel
                     </Button>
-                    <Button color="blue" onClick={this.createRoom}>
+                    <Button
+                        color="blue"
+                        onClick={this.createRoom}
+                        disabled={this.loading}
+                        loading={this.loading}
+                    >
                         Create game
                     </Button>
                 </Modal.Actions>
