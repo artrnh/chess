@@ -162,7 +162,7 @@ class GamesList extends React.Component {
 
     render() {
         const {
-            gamesList: {getAllGames}
+            gamesList: {getAllGames, loading}
         } = this.props;
 
         return (
@@ -170,7 +170,11 @@ class GamesList extends React.Component {
                 <Header as="h2">
                     Currently active games
                     <div>
-                        <Button color="yellow" onClick={getAllGames}>
+                        <Button
+                            color="yellow"
+                            onClick={getAllGames}
+                            disabled={loading}
+                        >
                             <Icon name="redo" />
                             Refresh
                         </Button>
