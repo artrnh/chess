@@ -5,11 +5,9 @@ import {observer, inject} from 'mobx-react';
 import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
 
-import {Button} from 'semantic-ui-react';
-
 import {getSocketUrl} from 'Utils/url';
 
-import {Board} from './components';
+import {Board, Description, Controls} from './components';
 
 import {Wrapper} from './styled';
 
@@ -44,9 +42,11 @@ class Game extends Component {
         const {
             game: {initGame, connectUser, disconnectUser, setError},
             match: {params},
-            user: userStore
+            user: userStore,
+            gamesList: {getAllGames}
         } = this.props;
 
+        await getAllGames();
         await initGame(params.id);
 
         const url = getSocketUrl();
@@ -91,28 +91,13 @@ class Game extends Component {
         history.push('/games');
     };
 
-    renderTurn = () => {
-        const {
-            game: {turn},
-            user
-        } = this.props;
-
-        const text = user.color === turn ? 'Your turn' : 'Waiting for opponent';
-
-        return <p>{text}</p>;
-    };
-
     render() {
         // TODO: Повесить лоадер
         return this.socket ? (
             <Wrapper>
-                <Button color="red" onClick={this.leaveGame}>
-                    Leave Game
-                </Button>
-
-                {this.renderTurn()}
-
+                <Description leaveGame={this.leaveGame} />
                 <Board socket={this.socket} />
+                <Controls />
             </Wrapper>
         ) : null;
     }

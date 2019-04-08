@@ -80,7 +80,7 @@ class GamesList extends React.Component {
                         to={`/games/${_id}`}
                         onClick={this.joinGame(user._id, 'white')}
                         disabled={isFull || !!whiteUser}
-                        color="olive"
+                        color="grey"
                         animated
                         compact
                     >
@@ -95,7 +95,7 @@ class GamesList extends React.Component {
                         to={`/games/${_id}`}
                         onClick={this.joinGame(user._id, 'black')}
                         disabled={isFull || !!blackUser}
-                        color="brown"
+                        color="black"
                         animated
                         compact
                     >
@@ -110,6 +110,7 @@ class GamesList extends React.Component {
                         disabled={isFull}
                         onClick={this.deleteGame(_id)}
                         color="red"
+                        inverted
                         animated
                         compact
                     >
