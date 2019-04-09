@@ -109,6 +109,8 @@ class GameStore {
         if (turn !== userColor || figure.color !== userColor) return false;
 
         const enemyFigure = this.board[toY][toX].figure;
+
+        if (enemyFigure.name === FigureTypes.KING) return false;
         const canAttack = enemyFigure.color !== figure.color;
 
         switch (figure.name) {
