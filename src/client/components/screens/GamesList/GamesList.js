@@ -60,11 +60,13 @@ class GamesList extends React.Component {
 
     renderGame = game => {
         const {user} = this.props;
-        const {_id, name, users} = game;
+        const {_id, name, users, creator} = game;
 
         const whiteUser = users.find(u => u.color === 'white');
         const blackUser = users.find(u => u.color === 'black');
         const isFull = users.length >= 2;
+
+        console.log(creator);
 
         return (
             <Table.Row key={_id} disabled={isFull}>
@@ -109,19 +111,21 @@ class GamesList extends React.Component {
                 </Table.Cell>
 
                 <Table.Cell width={1} verticalAlign="middle">
-                    <Button
-                        disabled={isFull}
-                        onClick={this.deleteGame(_id)}
-                        color="red"
-                        inverted
-                        animated
-                        compact
-                    >
-                        <Button.Content visible>Delete</Button.Content>
-                        <Button.Content hidden>
-                            <Icon name="delete" />
-                        </Button.Content>
-                    </Button>
+                    {creator === user._id && (
+                        <Button
+                            disabled={isFull}
+                            onClick={this.deleteGame(_id)}
+                            color="red"
+                            inverted
+                            animated
+                            compact
+                        >
+                            <Button.Content visible>Delete</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name="delete" />
+                            </Button.Content>
+                        </Button>
+                    )}
                 </Table.Cell>
             </Table.Row>
         );

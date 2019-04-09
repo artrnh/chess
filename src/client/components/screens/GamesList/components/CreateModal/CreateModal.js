@@ -29,14 +29,14 @@ class CreateModal extends React.Component {
     };
 
     @action.bound
-    createRoom = async () => {
+    createGame = async () => {
         const {gamesList, user, routing} = this.props;
 
         this.loading = true;
 
         if (!this.name || !this.color) return;
 
-        const {_id: gameId} = await gamesList.createGame(this.name);
+        const {_id: gameId} = await gamesList.createGame(this.name, user._id);
         user.setColor(user._id, this.color);
 
         this.toggleModal();
@@ -113,7 +113,7 @@ class CreateModal extends React.Component {
                     </Button>
                     <Button
                         color="blue"
-                        onClick={this.createRoom}
+                        onClick={this.createGame}
                         disabled={this.loading}
                         loading={this.loading}
                     >

@@ -13,6 +13,10 @@ const gameSchema = mongoose.Schema({
             default: []
         }
     ],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     board: [
         [
             {
