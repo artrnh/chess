@@ -15,7 +15,8 @@ import {CreateModal} from './components';
 
 const iconsByRules = {
     Classic: 'chess pawn',
-    Horde: 'th'
+    Horde: 'th',
+    Chess960: 'random'
 };
 
 @inject('gamesList', 'user')

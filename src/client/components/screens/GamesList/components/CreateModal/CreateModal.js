@@ -97,6 +97,7 @@ class CreateModal extends React.Component {
                 placeholder="Choose your rules set..."
                 options={[
                     {text: 'Classic', value: 'Classic'},
+                    {text: 'Chess960', value: 'Chess960'},
                     {text: 'Horde', value: 'Horde'}
                 ]}
                 onChange={this.changeFieldValue}

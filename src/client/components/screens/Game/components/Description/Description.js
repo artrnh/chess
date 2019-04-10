@@ -8,7 +8,8 @@ import {Wrapper, GameDescription, Text, Players} from './styled';
 
 const iconsByRules = {
     Classic: 'chess pawn',
-    Horde: 'th'
+    Horde: 'th',
+    Chess960: 'random'
 };
 
 @inject('game')

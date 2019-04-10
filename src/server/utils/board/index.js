@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import {classic, horde} from './layouts';
+import {classic, horde, fischer} from './layouts';
 
 class Cell {
     constructor(x, y, figure = {}) {
@@ -30,10 +30,12 @@ const createBoard = (layout, whiteRows) =>
 export default rules => {
     switch (rules) {
         case 'Classic':
-            return createBoard(classic, [6, 7]);
+            return createBoard(classic(), [6, 7]);
         case 'Horde':
-            return createBoard(horde, [3, 4, 5, 6, 7]);
+            return createBoard(horde(), [3, 4, 5, 6, 7]);
+        case 'Chess960':
+            return createBoard(fischer(), [6, 7]);
         default:
-            return createBoard(classic, [6, 7]);
+            return createBoard(classic(), [6, 7]);
     }
 };
