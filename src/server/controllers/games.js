@@ -1,5 +1,5 @@
 import Game from '../models/game';
-import {createBoard} from '../utils/board';
+import createBoard from '../utils/board';
 
 export const getGames = (req, res) =>
     Game.find()
