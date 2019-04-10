@@ -13,6 +13,11 @@ import {Wrapper, Header} from './styled';
 
 import {CreateModal} from './components';
 
+const iconsByRules = {
+    Classic: 'chess pawn',
+    Horde: 'th'
+};
+
 @inject('gamesList', 'user')
 @observer
 class GamesList extends React.Component {
@@ -60,25 +65,28 @@ class GamesList extends React.Component {
 
     renderGame = game => {
         const {user} = this.props;
-        const {_id, name, users, creator} = game;
+        const {_id, name, users, creator, rules} = game;
 
         const whiteUser = users.find(u => u.color === 'white');
         const blackUser = users.find(u => u.color === 'black');
         const isFull = users.length >= 2;
 
-        console.log(creator);
-
         return (
             <Table.Row key={_id} disabled={isFull}>
-                <Table.Cell width={7} verticalAlign="middle">
+                <Table.Cell width={4} verticalAlign="middle">
                     {name}
+                </Table.Cell>
+
+                <Table.Cell width={4} verticalAlign="middle">
+                    <Icon name={iconsByRules[rules]} color="grey" />
+                    {rules}
                 </Table.Cell>
 
                 <Table.Cell width={4} verticalAlign="middle">
                     {`${users.length}/2`}
                 </Table.Cell>
 
-                <Table.Cell width={4} verticalAlign="middle">
+                <Table.Cell width={3} verticalAlign="middle">
                     <Button
                         as={Link}
                         to={`/games/${_id}`}
@@ -153,6 +161,7 @@ class GamesList extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Rules</Table.HeaderCell>
                         <Table.HeaderCell>Players</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
                         <Table.HeaderCell />

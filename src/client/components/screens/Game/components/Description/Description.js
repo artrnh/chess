@@ -6,15 +6,24 @@ import {Button, Icon, Divider} from 'semantic-ui-react';
 
 import {Wrapper, GameDescription, Text, Players} from './styled';
 
+const iconsByRules = {
+    Classic: 'chess pawn',
+    Horde: 'th'
+};
+
 @inject('game')
 @observer
 class Description extends Component {
     static propTypes = {
-        leaveGame: PropTypes.func.isRequired
+        leaveGame: PropTypes.func.isRequired,
+        game: PropTypes.shape({rules: PropTypes.string}).isRequired
     };
 
     render() {
-        const {leaveGame} = this.props;
+        const {
+            leaveGame,
+            game: {rules}
+        } = this.props;
 
         return (
             <Wrapper>
@@ -33,9 +42,9 @@ class Description extends Component {
                 </Button>
 
                 <GameDescription>
-                    <Icon name="cogs" size="big" color="grey" />
+                    <Icon name={iconsByRules[rules]} size="big" color="grey" />
                     <Text>
-                        Classic • Unlimited
+                        {`${rules} • Unlimited`}
                         <br />
                         Playing right now
                     </Text>

@@ -27,6 +27,8 @@ class GameStore {
 
     @observable creator = '';
 
+    @observable rules = '';
+
     @observable loading = false;
 
     @observable error = null;
@@ -40,6 +42,7 @@ class GameStore {
             this.name = data.name;
             this.turn = data.turn;
             this.creator = data.creator;
+            this.rules = data.rules;
             this.setBoard(data.board);
         });
     }

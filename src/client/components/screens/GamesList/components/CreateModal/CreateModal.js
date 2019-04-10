@@ -21,6 +21,8 @@ class CreateModal extends React.Component {
 
     @observable color = '';
 
+    @observable rules = '';
+
     @observable loading = false;
 
     @action.bound
@@ -34,9 +36,14 @@ class CreateModal extends React.Component {
 
         this.loading = true;
 
-        if (!this.name || !this.color) return;
+        if (!this.name || !this.color || !this.rules) return;
 
-        const {_id: gameId} = await gamesList.createGame(this.name, user._id);
+        const {_id: gameId} = await gamesList.createGame(
+            this.name,
+            user._id,
+            this.rules
+        );
+
         user.setColor(user._id, this.color);
 
         this.toggleModal();
@@ -81,6 +88,19 @@ class CreateModal extends React.Component {
                 ]}
                 onChange={this.changeFieldValue}
                 value={this.color}
+                required
+            />
+
+            <Form.Select
+                name="rules"
+                label="Rules"
+                placeholder="Choose your rules set..."
+                options={[
+                    {text: 'Classic', value: 'Classic'},
+                    {text: 'Horde', value: 'Horde'}
+                ]}
+                onChange={this.changeFieldValue}
+                value={this.rules}
                 required
             />
         </Form>

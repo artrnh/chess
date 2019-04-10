@@ -17,6 +17,10 @@ const gameSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    rules: {
+        type: String,
+        default: 'Classic'
+    },
     board: [
         [
             {

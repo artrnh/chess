@@ -9,8 +9,8 @@ class GamesListStore {
     @observable loading = false;
 
     @action.bound
-    async createGame(name, userId) {
-        const {data} = await Api.gamesList.createGame(name, userId);
+    async createGame(name, userId, rules) {
+        const {data} = await Api.gamesList.createGame(name, userId, rules);
 
         runInAction(() => {
             this.games.push(data);

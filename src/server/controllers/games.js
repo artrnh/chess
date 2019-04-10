@@ -13,9 +13,9 @@ export const getGame = (req, res) => {
 };
 
 export const createGame = (req, res) => {
-    const {name, userId: creator} = req.body;
+    const {name, rules, userId: creator} = req.body;
 
-    const game = new Game({name, creator, board: createBoard()});
+    const game = new Game({name, creator, rules, board: createBoard(rules)});
     return game.save().then(createdGame => res.status(201).json(createdGame));
 };
 
