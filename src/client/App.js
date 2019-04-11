@@ -6,7 +6,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 
 import {Navigation, Layout} from 'Common';
 
-import {Game, GamesList} from 'Screens';
+import {Game, GamesList, Editor} from 'Screens';
 
 @inject('user', 'routing')
 class App extends Component {
@@ -41,6 +41,7 @@ class App extends Component {
 
                         <Route path="/games/:id" component={Game} />
                         <Route path="/games" component={GamesList} />
+                        <Route path="/editor" component={Editor} />
                     </Switch>
                 </Layout>
             </>

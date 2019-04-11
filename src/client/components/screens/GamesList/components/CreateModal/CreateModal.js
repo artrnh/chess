@@ -5,6 +5,7 @@ import {action, observable, runInAction} from 'mobx';
 import {observer, inject} from 'mobx-react';
 
 import {Modal, Button, Form, Icon} from 'semantic-ui-react';
+import {EditorLink} from './styled';
 
 @inject('gamesList', 'user', 'routing')
 @observer
@@ -68,7 +69,7 @@ class CreateModal extends React.Component {
     }
 
     renderForm = () => (
-        <Form onSubmit={this.createRoom}>
+        <Form onSubmit={this.createRoom} loading={this.loading}>
             <Form.Input
                 name="name"
                 label="Name"
@@ -96,14 +97,18 @@ class CreateModal extends React.Component {
                 label="Rules"
                 placeholder="Choose your rules set..."
                 options={[
-                    {text: 'Classic', value: 'Classic'},
-                    {text: 'Chess960', value: 'Chess960'},
-                    {text: 'Horde', value: 'Horde'}
+                    {text: 'Classic', value: 'Classic', icon: 'chess pawn'},
+                    {text: 'Chess960', value: 'Chess960', icon: 'random'},
+                    {text: 'Horde', value: 'Horde', icon: 'th'}
                 ]}
                 onChange={this.changeFieldValue}
                 value={this.rules}
                 required
             />
+
+            <EditorLink to="/editor">
+                Or create your custom rules set
+            </EditorLink>
         </Form>
     );
 
@@ -136,7 +141,6 @@ class CreateModal extends React.Component {
                         color="blue"
                         onClick={this.createGame}
                         disabled={this.loading}
-                        loading={this.loading}
                     >
                         Create game
                     </Button>
