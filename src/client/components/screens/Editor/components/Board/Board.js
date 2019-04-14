@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
 import PropTypes from 'prop-types';
 
-import {CustomDragLayer} from 'Common';
 import {Cell} from './components';
 
 import {BoardContainer} from './styled';
@@ -24,7 +23,6 @@ class Board extends Component {
 
         return (
             <BoardContainer>
-                <CustomDragLayer />
                 {board.map(row =>
                     row.map(({x, y, figure}) => (
                         <Cell
