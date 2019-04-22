@@ -13,8 +13,14 @@ export const Wrapper = styled.div`
     flex-direction: column;
 `;
 
-export const Title = styled(Segment)`
+export const Description = styled(Segment)`
     width: 250px;
     margin: 0 !important;
     margin-right: 20px !important;
+`;
+
+export const Title = styled.p`
+    margin: 5px 0;
+    font-size: 1.15rem;
+    font-weight: 600;
 `;
