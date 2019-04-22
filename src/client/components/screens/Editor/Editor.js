@@ -1,23 +1,21 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {CustomDragLayer} from 'Common';
 
-import {Board, Figures} from './components';
+import {Board, Figures, Controls} from './components';
 
-import {Wrapper, Container} from './styled';
+import {Wrapper, Container, Title} from './styled';
 
-class Editor extends Component {
-    render() {
-        return (
-            <Container>
-                <Wrapper>
-                    <CustomDragLayer />
-                    <Board />
-                    <Figures />
-                </Wrapper>
-            </Container>
-        );
-    }
-}
+const Editor = () => (
+    <Container>
+        <Title secondary>Board editor</Title>
+        <Wrapper>
+            <CustomDragLayer />
+            <Board />
+            <Figures />
+        </Wrapper>
+        <Controls />
+    </Container>
+);
 
 export default Editor;

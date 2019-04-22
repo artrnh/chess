@@ -1,5 +1,7 @@
 import {action, observable} from 'mobx';
 
+import Api from 'Api';
+
 import {createBoard} from 'Utils/editor';
 
 class EditorStore {
@@ -33,6 +35,18 @@ class EditorStore {
         const [figureX, figureY] = figure.position;
         this.board[figureY][figureX].figure = {};
     };
+
+    @action.bound
+    async createGame(name, userId, rules) {
+        const {data} = await Api.gamesList.createGame(
+            name,
+            userId,
+            rules,
+            this.board
+        );
+
+        return data;
+    }
 }
 
 export default EditorStore;
